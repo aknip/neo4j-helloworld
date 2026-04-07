@@ -13,6 +13,23 @@ Personen können Mitarbeiter von Firmen sein, Personen können Kunden von Firmen
 Erstelle 10 Testdatensätze.
 
 
+## GUI
+
+Basierend auf dem Demo-CRM (demo_crm.py), erstelle eine GUI mit Streamlit, die die Datenbank abfragt und anzeigt:
+- Liste aller Personen
+- Liste aller Firmen
+- Liste aller Mitarbeiter einer Firma
+- Liste aller Kunden einer Firma
+- Liste aller Kunden einer Person
+- Alle Listen bieten Optionen zum Hinzufügen, Löschen und Bearbeiten von Einträgen
+
+
+
+
+
+
+
+
 # UWWB DB
 
 Eine Neo4J Datenbank läuft lokal auf meinem Mac: 
