@@ -19,11 +19,16 @@ interface GraphRel {
   type: string
 }
 
+const DEPTH_CYCLE = [1, 2, 3, 4, null] as const
+type FocusDepth = 1 | 2 | 3 | 4 | null
+
 export function GraphTab() {
   const cyRef = useRef<HTMLDivElement>(null)
   const cyInstance = useRef<Core | null>(null)
   const [maxNodes, setMaxNodes] = useState(100)
   const [selectedLabels, setSelectedLabels] = useState<string[] | null>(null)
+  const [focusNodeId, setFocusNodeId] = useState<string | null>(null)
+  const [focusDepth, setFocusDepth] = useState<FocusDepth>(null)
 
   const { data: labels, isLoading: labelsLoading } = useQuery({
     queryKey: ['schema', 'labels'],
@@ -111,6 +116,15 @@ export function GraphTab() {
           },
         },
         {
+          selector: 'node.focused',
+          style: {
+            'border-width': 3,
+            'border-color': '#000',
+            width: 28,
+            height: 28,
+          },
+        },
+        {
           selector: 'edge',
           style: {
             label: 'data(label)',
@@ -141,15 +155,38 @@ export function GraphTab() {
 
     // Tooltip on hover
     cy.on('mouseover', 'node', (e) => {
-      const node = e.target
-      node.tippy = node.tippy
-      // Simple approach: use title attribute on container
       if (cyRef.current) {
-        cyRef.current.title = node.data('tooltip') ?? ''
+        cyRef.current.title = e.target.data('tooltip') ?? ''
       }
     })
     cy.on('mouseout', 'node', () => {
       if (cyRef.current) cyRef.current.title = ''
+    })
+
+    // Click: focus neighborhood
+    cy.on('tap', 'node', (e) => {
+      const clickedId = e.target.id()
+      setFocusNodeId((prevId) => {
+        if (prevId === clickedId) {
+          // Same node: cycle depth
+          setFocusDepth((prev) => {
+            const idx = DEPTH_CYCLE.indexOf(prev)
+            return DEPTH_CYCLE[(idx + 1) % DEPTH_CYCLE.length]
+          })
+          return clickedId
+        }
+        // Different node: start at depth 1
+        setFocusDepth(1)
+        return clickedId
+      })
+    })
+
+    // Click on background: reset
+    cy.on('tap', (e) => {
+      if (e.target === cy) {
+        setFocusNodeId(null)
+        setFocusDepth(null)
+      }
     })
 
     cy.fit(undefined, 30)
@@ -165,6 +202,39 @@ export function GraphTab() {
       }
     }
   }, [renderGraph])
+
+  // Apply focus filter when focusNodeId/focusDepth change
+  useEffect(() => {
+    const cy = cyInstance.current
+    if (!cy) return
+
+    if (!focusNodeId || focusDepth === null) {
+      // Show all
+      cy.elements().show()
+      cy.elements().removeClass('dimmed')
+      cy.nodes().removeClass('focused')
+      return
+    }
+
+    const root = cy.getElementById(focusNodeId)
+    if (!root.length) return
+
+    // BFS to collect nodes within N hops
+    let frontier = root.collection()
+    for (let hop = 0; hop < focusDepth; hop++) {
+      frontier = frontier.nodes().closedNeighborhood()
+    }
+
+    const visible = frontier
+    const hidden = cy.elements().difference(visible)
+
+    visible.show()
+    hidden.hide()
+
+    // Highlight root
+    cy.nodes().removeClass('focused')
+    root.addClass('focused')
+  }, [focusNodeId, focusDepth])
 
   if (labelsLoading) return <Skeleton className='h-96 w-full' />
 
@@ -189,6 +259,14 @@ export function GraphTab() {
     <div className='flex gap-4'>
       {/* Graph */}
       <div className='flex-1'>
+        {focusNodeId && focusDepth !== null && (
+          <div className='bg-muted mb-2 flex items-center justify-between rounded-md px-3 py-1.5 text-sm'>
+            <span>
+              Fokus: <strong>{cyInstance.current?.getElementById(focusNodeId)?.data('label') ?? focusNodeId}</strong> — Ebene {focusDepth}
+              <span className='text-muted-foreground ml-2'>(Klick auf Node: nächste Ebene, Klick auf Hintergrund: zurücksetzen)</span>
+            </span>
+          </div>
+        )}
         {graphLoading && <Skeleton className='h-[600px] w-full' />}
         <div
           ref={cyRef}

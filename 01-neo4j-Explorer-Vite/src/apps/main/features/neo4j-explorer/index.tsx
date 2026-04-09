@@ -14,7 +14,7 @@ import { GraphTab } from './components/graph-tab'
 import { ExplorerTab } from './components/explorer-tab'
 import { SearchTab } from './components/search-tab'
 import { SchemaTab } from './components/schema-tab'
-import { ImportPanel } from './components/import-panel'
+import { ImportTab } from './components/import-tab'
 
 export function Neo4jExplorer() {
   const { activeTab, setActiveTab } = useExplorerState()
@@ -23,7 +23,6 @@ export function Neo4jExplorer() {
     <>
       <Header>
         <div className='ms-auto flex items-center space-x-4'>
-          <ImportPanel />
           <ThemeSwitcher />
           <AppSwitch />
           <ProfileDropdown />
@@ -41,6 +40,7 @@ export function Neo4jExplorer() {
             <TabsTrigger value='explorer'>Explorer</TabsTrigger>
             <TabsTrigger value='search'>Suche</TabsTrigger>
             <TabsTrigger value='schema'>Schema</TabsTrigger>
+            <TabsTrigger value='import'>Import</TabsTrigger>
           </TabsList>
 
           <TabsContent value='graph' className='mt-4'>
@@ -54,6 +54,9 @@ export function Neo4jExplorer() {
           </TabsContent>
           <TabsContent value='schema' className='mt-4'>
             <SchemaTab />
+          </TabsContent>
+          <TabsContent value='import' className='mt-4'>
+            <ImportTab />
           </TabsContent>
         </Tabs>
       </Main>

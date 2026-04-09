@@ -108,6 +108,8 @@ Geschäftspartner (Unternehmen, Versicherer, Makler, Ansprechpartner) werden ein
 
 Standardmässig erhalten alle Nodes: `id` (String, Unique), `createdAt` (DateTime), `updatedAt` (DateTime). Zusätzlich `status` wo sinnvoll.
 
+**Konvention `name`-Property:** Jeder Node-Typ MUSS eine sprechende Anzeige-Property besitzen, die im Graph-Explorer als Label sichtbar ist. Bei den meisten Typen ist das `name` (String). Ausnahmen: Partner-Typen verwenden `legalName`, InsurableObjects verwenden `objectName`, InsuranceProduct `productName`, InsuranceLine `lineName`, AttributeTemplate `templateName`, Clause `title`. Der `name`-Wert soll kurz und fachlich verständlich sein (z.B. "Feuer Produktionshalle", "Vollkasko LKW 500k").
+
 #### Partner (Basis-Label)
 | Property | Neo4j-Typ | Pflicht | Index | Beschreibung |
 |----------|-----------|---------|-------|-------------|

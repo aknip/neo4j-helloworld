@@ -169,3 +169,14 @@ Erstelle hierzu einen Plan "_NOTES/iterative_plan.md"
 Ziel App: 01-neo4j-Explorer-Vite, dort die App "Main App"
 Analysiere die Python app "00-neo4j-Explorer-Python" und baue sie in Vite um: Lege dort in der Sidebar einen neuen Punkt "Neo4j Explorer" an und baue dort die App ein. 
 Erstelle einen Implementierungsplan "_NOTES/01-neo4j-Explorer-Vite_plan.md"
+
+aktuell werden im Graph (und Explorer) einige Nodes mit fachlich sprechenden inhalten angezeit (Firmenname, Maschinenbezeichnung etc.), andere Nodes aber nicht: Sie werden mit nicht sprechenden Kürzeln wie "risk-002" oder "pcov-004" angezeigt. Warum ist das so? Wie kann ich das ändern?
+Analysiere - implementiere noch nichts!
+
+Button "Import" (oben rechts) => entfernen und durch. neuen Tab "Import" ersetzen: "Graph, Explorer, Suche, Schema, Import"
+Beim Klick soll keine Sidebar von rechts aufklappen, sondern die Funktionalität soll normal im Contentbereich angezeigt werden (so wie Graph, Explorer, Suche, Schema)
+
+
+Graph: Bei Klick auf einen Node sollen nur noch alle direkt verknüpften Nodes angezeigt werden: Beim ersten Klick bis zur 2. Ebene, beim zweiten Klick bis zur 3. Ebene, beim dritten Klick bis zur 4. Ebene. Danach wieder alle Nodes. Die anderen Nodes sollen ausgeblendet werden. 
+
+)
