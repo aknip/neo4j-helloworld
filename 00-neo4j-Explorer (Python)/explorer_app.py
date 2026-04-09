@@ -20,7 +20,7 @@ PASSWORD = "neo4jneo4j"
 DB = "neo4j"
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-CYPHER_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "cypher"))
+DEFAULT_CYPHER_DIR = os.path.normpath(os.path.join(SCRIPT_DIR, "..", "Ontology_UWWB", "cypher"))
 
 PALETTE = [
     "#4E79A7", "#F28E2B", "#E15759", "#76B7B2", "#59A14F",
@@ -166,16 +166,17 @@ def reset_database():
     run_write("MATCH (n) DETACH DELETE n")
 
 
-def import_cypher_files():
-    """Alle .cypher-Dateien aus CYPHER_DIR importieren."""
-    if not os.path.isdir(CYPHER_DIR):
-        return [("FEHLER", f"Verzeichnis nicht gefunden: {CYPHER_DIR}")]
+def import_cypher_files(cypher_dir=None):
+    """Alle .cypher-Dateien aus dem angegebenen Verzeichnis importieren."""
+    cypher_dir = cypher_dir or DEFAULT_CYPHER_DIR
+    if not os.path.isdir(cypher_dir):
+        return [("FEHLER", f"Verzeichnis nicht gefunden: {cypher_dir}")]
 
-    files = sorted(f for f in os.listdir(CYPHER_DIR) if f.endswith(".cypher"))
+    files = sorted(f for f in os.listdir(cypher_dir) if f.endswith(".cypher"))
     results = []
 
     for filename in files:
-        filepath = os.path.join(CYPHER_DIR, filename)
+        filepath = os.path.join(cypher_dir, filename)
         try:
             statements = parse_cypher_file(filepath)
             errors = []
@@ -339,18 +340,38 @@ def primary_label(labels):
 # =============================================================================
 
 
+def get_cypher_dir():
+    """Aktuelles Cypher-Verzeichnis aus Session State oder Default."""
+    return st.session_state.get("cypher_dir", DEFAULT_CYPHER_DIR)
+
+
 def sidebar_import():
     with st.sidebar:
         st.header("Cypher-Import")
-        st.caption(f"Quelle: `{os.path.relpath(CYPHER_DIR)}`")
+
+        # Verzeichnis-Auswahl
+        cypher_dir = st.text_input(
+            "Cypher-Verzeichnis",
+            value=get_cypher_dir(),
+            key="cypher_dir_input",
+            help="Pfad zum Verzeichnis mit .cypher-Dateien",
+        )
+        cypher_dir = os.path.expanduser(cypher_dir)
+        if not os.path.isabs(cypher_dir):
+            cypher_dir = os.path.join(SCRIPT_DIR, cypher_dir)
+        cypher_dir = os.path.normpath(cypher_dir)
+        st.session_state.cypher_dir = cypher_dir
 
         # Dateien auflisten
-        if os.path.isdir(CYPHER_DIR):
-            files = sorted(f for f in os.listdir(CYPHER_DIR) if f.endswith(".cypher"))
-            for f in files:
-                st.text(f"  {f}")
+        if os.path.isdir(cypher_dir):
+            files = sorted(f for f in os.listdir(cypher_dir) if f.endswith(".cypher"))
+            if files:
+                for f in files:
+                    st.text(f"  {f}")
+            else:
+                st.warning("Keine .cypher-Dateien im Verzeichnis")
         else:
-            st.warning("Cypher-Verzeichnis nicht gefunden")
+            st.warning("Verzeichnis nicht gefunden")
 
         st.divider()
 
@@ -360,7 +381,7 @@ def sidebar_import():
             st.success("Datenbank geleert")
 
             with st.spinner("Cypher-Dateien werden importiert..."):
-                results = import_cypher_files()
+                results = import_cypher_files(cypher_dir)
 
             for r in results:
                 if r[0] == "OK":
