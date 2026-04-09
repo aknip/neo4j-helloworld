@@ -179,4 +179,6 @@ Beim Klick soll keine Sidebar von rechts aufklappen, sondern die Funktionalität
 
 Graph: Bei Klick auf einen Node sollen nur noch alle direkt verknüpften Nodes angezeigt werden: Beim ersten Klick bis zur 2. Ebene, beim zweiten Klick bis zur 3. Ebene, beim dritten Klick bis zur 4. Ebene. Danach wieder alle Nodes. Die anderen Nodes sollen ausgeblendet werden. 
 
-)
+==========================================================================================
+
+analysiere: wie kann ich die neo4j Datenbank in das projekt integrieren? zur zeit ist das eine externe Datenbank, die ich lokal laufen lassen muss. Wie kann ich die Datenbank in das Projekt integrieren?

@@ -4,7 +4,9 @@ node_modules/
 # Build output
 dist/
 build/
-_NOTES/
+
+# Neo4j data
+db/
 
 # Test coverage
 coverage/

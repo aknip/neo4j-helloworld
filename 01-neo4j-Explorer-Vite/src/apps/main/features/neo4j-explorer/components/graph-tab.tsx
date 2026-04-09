@@ -276,7 +276,7 @@ export function GraphTab() {
       </div>
 
       {/* Controls */}
-      <div className='w-64 shrink-0 space-y-4'>
+      <div className='w-88 shrink-0 space-y-4'>
         <div>
           <label className='text-sm font-medium'>
             Max. Nodes: {maxNodes}
@@ -309,7 +309,7 @@ export function GraphTab() {
                 : 'Alle'}
             </Button>
           </div>
-          <div className='mt-2 space-y-1'>
+          <div className='mt-2 grid grid-cols-2 gap-1'>
             {allLabels.map((l) => {
               const color = labelColor(l, allLabels)
               const count = labels?.find((lb) => lb.label === l)?.count ?? 0
@@ -329,7 +329,7 @@ export function GraphTab() {
                     className='inline-block h-3 w-3 rounded-full'
                     style={{ backgroundColor: color }}
                   />
-                  <span>
+                  <span className='text-xs'>
                     {l}{' '}
                     <span className='text-muted-foreground'>({count})</span>
                   </span>
@@ -339,26 +339,6 @@ export function GraphTab() {
           </div>
         </div>
 
-        {/* Legende */}
-        <div>
-          <p className='mb-2 text-sm font-medium'>Legende</p>
-          <div className='space-y-1'>
-            {activeLabels.map((l) => {
-              const color = labelColor(l, allLabels)
-              const count =
-                labels?.find((lb) => lb.label === l)?.count ?? 0
-              return (
-                <div key={l} className='flex items-center gap-2 text-sm'>
-                  <span
-                    className='inline-block h-3 w-3 rounded-full'
-                    style={{ backgroundColor: color }}
-                  />
-                  {l} ({count})
-                </div>
-              )
-            })}
-          </div>
-        </div>
       </div>
     </div>
   )

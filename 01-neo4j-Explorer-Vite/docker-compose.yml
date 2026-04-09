@@ -9,8 +9,5 @@ services:
       NEO4J_AUTH: neo4j/neo4jneo4j
       NEO4J_PLUGINS: '[]'
     volumes:
-      - neo4j-data:/data
+      - ./db:/data
       - ../Ontology_UWWB/cypher:/import
-
-volumes:
-  neo4j-data:
