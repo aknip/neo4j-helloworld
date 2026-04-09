@@ -8,27 +8,27 @@ export const settingsRouter = Router()
 const DATA_DIR = path.resolve(import.meta.dirname, '../../data')
 const SETTINGS_FILE = path.join(DATA_DIR, 'explorer-settings.json')
 
-interface LabelSettings {
+export interface LabelSettings {
   visible: boolean
   displayName: string
 }
 
-interface PropertySettings {
+export interface PropertySettings {
   displayName: string
 }
 
-interface RelTypeSettings {
+export interface RelTypeSettings {
   displayName: string
 }
 
-interface ExplorerSettings {
+export interface ExplorerSettings {
   version: number
   labels: Record<string, LabelSettings>
   properties: Record<string, PropertySettings>
   relationshipTypes: Record<string, RelTypeSettings>
 }
 
-function readSettings(): ExplorerSettings | null {
+export function readSettings(): ExplorerSettings | null {
   try {
     const raw = fs.readFileSync(SETTINGS_FILE, 'utf-8')
     return JSON.parse(raw) as ExplorerSettings

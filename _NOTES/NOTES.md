@@ -182,3 +182,49 @@ Graph: Bei Klick auf einen Node sollen nur noch alle direkt verknüpften Nodes a
 ==========================================================================================
 
 analysiere: wie kann ich die neo4j Datenbank in das projekt integrieren? zur zeit ist das eine externe Datenbank, die ich lokal laufen lassen muss. Wie kann ich die Datenbank in das Projekt integrieren?
+
+==========================================================================================
+
+01-neo4j-Explorer-Vite :
+Ergänze in der "Main"-App, Menüpunkt "Neo4j Explorer" die Funktionalität "Settings" (neuer Tab, nach Import)
+Hier kann (optional) die UI für den Neo4j Explorer angepasst werden: 
+- Welche Nodes stehen zur Auswahl (unter "Graph" / "Labels filtern")
+- Wie sind die Labels, z. B. für die Properties (Mapping Original-Schema-Name => Anzeige-Name)
+- Wie sind die Anzeigenamen für Relationships (Mapping Original-Relationship-Type-Name => Anzeige-Name)
+Die Konfiguration wird in einer JSON-Datei gespeichert und kann in diesem Menüpunkt bearbeitet werden.
+Wenn die Konfiguration nicht existiert, wird sie beim ersten Start automatisch erstellt.
+Die Konfiguration "überschreibt" die Standard-Anzeigen der Nodes und Relationships. Wenn in der Konfiguration kein Mapping für einen Node oder Relationship definiert ist, wird der Standard-Name verwendet. D.h: Die Konfiguration ist optional und kann auch nur wenige Regeln/Mappings enthalten.
+Stelle Rückfragen zu diesen Anforderungen, wenn nötig.
+
+
+01-neo4j-Explorer-Vite :
+Ergänze in der "Main"-App, Menüpunkt "Neo4j Explorer" / "Einstellungen":
+Neuer Button "Übersetzungen anlegen" ergänzen.
+Funktionalität:
+- Nimm gespeicherte Settings-JSON (wenn nicht vorhanden, erstelle eine neue)
+- Lege eine Backup-Datei mit dem aktuellen Zeitstempel an
+- Rufe per OpenRouter API ein LLM auf (Gemini Flash), um die Inhalte der Settings-JSON auf Deutsch übersetzen zu lassen. Der Prompt soll folgende Hinweise enthalten: "Die JSON-Struktur muss unverändert bleiben, die Keys dürfen nicht übersetzt werden, nur die Values. Übersetze auf Deutsch mit Umlauten (ä,ö,ü., passe auf deutsche Groß-/Keinschreibung ein")
+- Ersetze die Settings-JSON mit der übersetzten Version
+Stelle Rückfragen zu diesen Anforderungen, wenn nötig.
+
+01-neo4j-Explorer-Vite :
+Ergänze in der "Main"-App, Menüpunkt "Neo4j Explorer" / "Explorer":
+Ergänze im Contentbereich (unterhalb der Tabs "Graph", "Explorer", "Suche" etc.) in der linken Spalte eine Subnavigation wie in der Reference-App (siehe http://localhost:5173/reference-app/settings )
+Liste dort die Punkte "Editor", "Zusammenfassung", "Graph" auf (Platzhalter, ohne Links)
+Hinweis: Die Sidebar-Nav bleibt erhalten, so wie im Beispiel der Reference-App.
+
+Funktionalität der Subnavigation:
+"Editor" (Default bei Klick auf "Explorer"): Funktionalität wie bisher
+"Zusammenfassung" und "Graph": Sind defaultmässig grau / nicht aktiv. Erst wenn ein Node ausgewählt ist, werden diese Menüpunkte aktiviert.
+"Zusammenfassung": Bei Klick wird per OpenRouter API ein LLM aufgerufen (Gemini Flash, vergleiche Funktionaltität bei "Einstellungen" / "Übersetzungen anlegen"). Dem LLM werden alle Informationen des Nodes als Kontext übergeben (inkl. aller eingehenden und ausgehenden Relationships). Das LLM soll eine Zusammenfassung des Nodes erstellen: Aus sachlich/fachlicher Perspektive, zu Beginn eine Kurzzusammenfassung mit den wichtigsten Informationen (Bulletpoints), dann eine detaillierte Zusammenfassung, nach fachlich sinnvollen Abschnitten priorisiert und gruppiert (ebfenfalls in Bulletpoints). 
+"Graph": Bei Klick wird Platzhaltertext angezeigt ("Work in progress..." )
+Stelle Rückfragen zu diesen Anforderungen, wenn nötig.
+
+
+==========================================================================================
+
+# Ideen für next step:
+
+Verlinkung des LLM Outputs:
+Das LLM soll im Output "Link-Codes" zu verlinkten Nodes ausgeben. Diese Link-Codes sollen als Links im Output angezeigt werden. Die Links sollen auf die jeweilige Node-URL verweisen (z.B. http://localhost:5173/neo4j-explorer/explorer/1234567890).
+

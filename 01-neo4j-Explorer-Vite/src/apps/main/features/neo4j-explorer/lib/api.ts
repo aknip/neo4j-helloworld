@@ -71,3 +71,7 @@ export const reinitSettings = () =>
 
 export const translateSettings = () =>
   api.post<ExplorerSettings>('/settings/translate').then((r) => r.data)
+
+// Node Summary
+export const fetchNodeSummary = (eid: string) =>
+  api.post<{ summary: string }>(`/nodes/${encodeURIComponent(eid)}/summary`).then((r) => r.data)

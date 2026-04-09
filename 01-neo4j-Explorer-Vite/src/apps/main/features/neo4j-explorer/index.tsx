@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { Header } from '@/apps/main/components/layout/header'
 import { Main } from '@/apps/main/components/layout/main'
 import { ProfileDropdown } from '@/apps/main/components/profile-dropdown'
@@ -16,9 +17,24 @@ import { SearchTab } from './components/search-tab'
 import { SchemaTab } from './components/schema-tab'
 import { ImportTab } from './components/import-tab'
 import { SettingsTab } from './components/settings-tab'
+import { clearSummaryCache } from './components/node-summary'
 
 export function Neo4jExplorer() {
   const { activeTab, setActiveTab } = useExplorerState()
+  const prevTabRef = useRef(activeTab)
+
+  // Clear summary cache when switching away from explorer tab
+  useEffect(() => {
+    if (prevTabRef.current === 'explorer' && activeTab !== 'explorer') {
+      clearSummaryCache()
+    }
+    prevTabRef.current = activeTab
+  }, [activeTab])
+
+  // Clear summary cache when leaving the page (sidebar navigation)
+  useEffect(() => {
+    return () => clearSummaryCache()
+  }, [])
 
   return (
     <>
