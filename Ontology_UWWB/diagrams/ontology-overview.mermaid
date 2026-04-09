@@ -1,0 +1,91 @@
+graph LR
+    subgraph Partner["Partner & Struktur"]
+        Customer["Customer\n:Partner:Customer"]
+        Insurer["Insurer\n:Partner:Insurer"]
+        Broker["Broker\n:Partner:Broker"]
+        Contact["Contact\n:Partner:Contact"]
+    end
+
+    subgraph Objekte["Versicherbare Objekte"]
+        InsurableObject["InsurableObject\n:Building / :Machine /\n:Vehicle / :Person / :Project"]
+        Risk["Risk"]
+        CoverageRequest["CoverageRequest"]
+    end
+
+    subgraph Produkte["Versicherungsprodukte"]
+        InsuranceLine["InsuranceLine"]
+        InsuranceProduct["InsuranceProduct"]
+        CoverageDef["CoverageDefinition"]
+        Clause["Clause"]
+    end
+
+    subgraph Prozess["Ausschreibung & Angebot"]
+        Submission["Submission"]
+        Offer["Offer"]
+        CoverageOffer["CoverageOffer"]
+    end
+
+    subgraph Vertrag["Vertrag"]
+        Policy["Policy"]
+        PolicyCoverage["PolicyCoverage"]
+        Endorsement["Endorsement"]
+    end
+
+    subgraph Schaden["Schadenmanagement"]
+        Claim["Claim"]
+        ClaimSettlement["ClaimSettlement"]
+    end
+
+    subgraph Flex["Flexible Attribute"]
+        AttributeTemplate["AttributeTemplate"]
+        CustomAttribute["CustomAttribute"]
+    end
+
+    %% Partner & Struktur
+    Customer -->|HAS_SUBSIDIARY| Customer
+    Contact -->|WORKS_FOR| Customer
+    Contact -->|WORKS_FOR| Insurer
+    Contact -->|WORKS_FOR| Broker
+    Broker -->|MANAGES_ACCOUNT| Customer
+
+    %% Objekte & Risiken
+    Customer -->|OWNS| InsurableObject
+    InsurableObject -->|HAS_RISK| Risk
+    Risk -->|HAS_COVERAGE_REQUEST| CoverageRequest
+
+    %% Produkte
+    Insurer -->|OFFERS| InsuranceProduct
+    InsuranceProduct -->|BELONGS_TO_LINE| InsuranceLine
+    InsuranceLine -->|HAS_SUBLINE| InsuranceLine
+    InsuranceProduct -->|HAS_COVERAGE_DEF| CoverageDef
+    CoverageDef -->|HAS_CLAUSE| Clause
+
+    %% Ausschreibung & Angebot
+    Broker -->|SUBMITS| Submission
+    Submission -->|FOR_CUSTOMER| Customer
+    Submission -->|INCLUDES_REQUEST| CoverageRequest
+    Insurer -->|RESPONDS_WITH| Offer
+    Offer -->|FOR_SUBMISSION| Submission
+    Offer -->|CONTAINS| CoverageOffer
+    CoverageOffer -->|RESPONDS_TO| CoverageRequest
+    CoverageOffer -->|BASED_ON| CoverageDef
+
+    %% Vertrag
+    Policy -->|BOUND_FROM| Offer
+    Policy -->|INSURES| Customer
+    Policy -->|BROKERED_BY| Broker
+    Policy -->|UNDERWRITTEN_BY| Insurer
+    Policy -->|HAS_COVERAGE| PolicyCoverage
+    PolicyCoverage -->|COVERS_RISK| Risk
+    PolicyCoverage -->|BASED_ON_DEF| CoverageDef
+    Policy -->|HAS_ENDORSEMENT| Endorsement
+
+    %% Schaden
+    Claim -->|AGAINST_POLICY| Policy
+    Claim -->|AFFECTS_OBJECT| InsurableObject
+    Claim -->|AFFECTS_COVERAGE| PolicyCoverage
+    Claim -->|HAS_SETTLEMENT| ClaimSettlement
+
+    %% Flexible Attribute
+    InsurableObject -->|HAS_ATTRIBUTE| CustomAttribute
+    CustomAttribute -->|DEFINED_BY| AttributeTemplate

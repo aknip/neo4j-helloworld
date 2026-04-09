@@ -25,7 +25,7 @@ Basierend auf dem Demo-CRM (demo_crm.py), erstelle eine GUI mit Streamlit, die d
 
 
 
-
+==========================================================================================
 
 
 
@@ -135,3 +135,31 @@ Das Modell unterscheidet zwei Attributkategorien:
 - Vorgangsspezifisch: Individuelle Zusatzattribute für einzelne Geschäftsvorfälle
 
 Die flexiblen Attribute werden über **Vorlagen (Templates)** standardisiert, die je Objekttyp, Deckungstyp oder Produkttyp definiert werden. Zusätzlich sind individuelle Ad-hoc-Attribute pro Vorgang möglich.
+
+
+
+
+
+
+==========================================================================================
+
+
+
+.claude/skills/ontology-guide => erweitere skill
+
+
+==========================================================================================
+
+Versionierung / Historisierung ?
+
+
+==========================================================================================
+
+
+Ich möchte die entwicklung der Ontologie und des Graphen so konkret und nachvollziehbar wie möglich für mich machen. Die abstrakte Beschreibung der Entitäten und Beziehungen reicht mir da nicht aus, ich verliere den Überblick.
+Bitte schlage mir ein Vorgehen vor, wie ich iterativ vorgehen kann, in dem du eine konkrete Reihenfolge der Vereinerung vorschlägst und in Phasen aufteilst (zuerst Entität A, dann Beziehungen zwischen C und D usw.)
+Ergänzen zur Dokumentation soll in jeder Phase auch einen interaktiven Prototyp (Python) weitentwickelt werden, der den aktuellen Stand der Ontologie und des Graphen erfahbar macht: Visualisierung der Daten und ihrer Beziehungen, Search- und CRUD-Operationen um eingeständig mit den Daten arbeiten zu können.
+Der Protoyp soll generisch sein, sich aus Neo4J selbst konfigurieren (es soll keine Codeänderungen nach jeder Iteration der Spezifiakaton nötig sein):
+Schritt 1: Einlesen der Cypher-Spezifikationen aus dem Projektverzeichnis, um den aktuellen Stand der Spezifikation in Neo4J zu importieren bzw. abzubilden
+Schritt 2: Vollautomatische Visualisierung der Daten und ihrer Beziehungen und generische Oberfläche / Tools zum Einsehen von Details, Bearbeiten, Neuanlegen und Löschen von Daten (CRUD)
+Erstelle hierzu einen Plan "_NOTES/iterative_plan.md"

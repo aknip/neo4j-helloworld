@@ -1,6 +1,6 @@
 # Ontologie: UWWB (Underwriting Workbench)
 
-Stand: 2026-04-09 | Version: 0.5 | Status: Erstdurchlauf — Schritt 1c Beziehungen
+Stand: 2026-04-09 | Version: 1.0 | Status: Erstdurchlauf abgeschlossen
 
 ---
 
@@ -30,14 +30,14 @@ Underwriting Workbench (UWWB) für Industrieversicherer, Industrieversicherungsm
 ### Analytics Use Cases
 | # | Frage | Beschreibung | Status |
 |---|-------|-------------|--------|
-| 1 | Objektbestand eines Unternehmens | Welche Objekte hat ein Unternehmen? Welche Risiken haben diese Objekte? | Offen |
-| 2 | Deckungszuordnung | Welche Deckungen/Verträge sind den Risiken/Objekten zugeordnet? | Offen |
-| 3 | Beteiligte Versicherer | Wie viele Produkte/Versicherer sind an der Risikodeckung beteiligt? | Offen |
-| 4 | Risikokonzentration | Regional, nach Branche, nach max. Schadenshöhe über mehrere Verträge | Offen |
-| 5 | Makler-Performance | Wer bringt am meisten Geschäft? | Offen |
-| 6 | Deckungslücken | Wo ist ein Unternehmen unterversichert? | Offen |
-| 7 | Mehrfachdeckungen | Wo bestehen Überschneidungen über mehrere Verträge? | Offen |
-| 8 | Schadenquoten | Auf Ebene Deckung, Objekt, Unternehmen, Sparte, Versicherer | Offen |
+| 1 | Objektbestand eines Unternehmens | Welche Objekte hat ein Unternehmen? Welche Risiken haben diese Objekte? | Modelliert |
+| 2 | Deckungszuordnung | Welche Deckungen/Verträge sind den Risiken/Objekten zugeordnet? | Modelliert |
+| 3 | Beteiligte Versicherer | Wie viele Produkte/Versicherer sind an der Risikodeckung beteiligt? | Modelliert |
+| 4 | Risikokonzentration | Regional, nach Branche, nach max. Schadenshöhe über mehrere Verträge | Modelliert |
+| 5 | Makler-Performance | Wer bringt am meisten Geschäft? | Modelliert |
+| 6 | Deckungslücken | Wo ist ein Unternehmen unterversichert? | Modelliert |
+| 7 | Mehrfachdeckungen | Wo bestehen Überschneidungen über mehrere Verträge? | Modelliert |
+| 8 | Schadenquoten | Auf Ebene Deckung, Objekt, Unternehmen, Sparte, Versicherer | Modelliert |
 
 ---
 
@@ -365,19 +365,210 @@ Standardmässig erhalten alle Nodes: `id` (String, Unique), `createdAt` (DateTim
 
 ## 3. Relationship Types
 
-*[Wird in Schritt 1c ergänzt]*
+### Übersicht
+
+| # | Type | Von | Nach | Kardinalität | Properties | Beschreibung |
+|---|------|-----|------|--------------|------------|-------------|
+| **Partner & Struktur** | | | | | | |
+| 1 | HAS_SUBSIDIARY | Customer | Customer | 1:n | — | Konzernstruktur (Mutter→Tochter) |
+| 2 | WORKS_FOR | Contact | Partner | n:1 | role, since | Ansprechpartner gehört zu Partner |
+| 3 | MANAGES_ACCOUNT | Broker | Customer | n:m | since | Makler betreut Kunden |
+| **Objekte & Risiken** | | | | | | |
+| 4 | OWNS | Customer | InsurableObject | 1:n | since | Kunde besitzt versicherbares Objekt |
+| 5 | HAS_RISK | InsurableObject | Risk | 1:n | — | Objekt hat Risiko |
+| 6 | HAS_COVERAGE_REQUEST | Risk | CoverageRequest | 1:n | — | Risiko hat Deckungswunsch |
+| **Versicherungsprodukte** | | | | | | |
+| 7 | OFFERS | Insurer | InsuranceProduct | 1:n | — | Versicherer bietet Produkt an |
+| 8 | BELONGS_TO_LINE | InsuranceProduct | InsuranceLine | n:1 | — | Produkt gehört zu Sparte |
+| 9 | HAS_SUBLINE | InsuranceLine | InsuranceLine | 1:n | — | Spartenhierarchie |
+| 10 | HAS_COVERAGE_DEF | InsuranceProduct | CoverageDefinition | 1:n | — | Produkt hat Deckungsdefinitionen |
+| 11 | HAS_CLAUSE | CoverageDefinition | Clause | n:m | mandatory | Deckungsdefinition hat Klauseln |
+| **Ausschreibung & Angebot** | | | | | | |
+| 12 | SUBMITS | Broker | Submission | 1:n | — | Makler erstellt Ausschreibung |
+| 13 | FOR_CUSTOMER | Submission | Customer | n:1 | — | Ausschreibung für Kunden |
+| 14 | INCLUDES_REQUEST | Submission | CoverageRequest | 1:n | — | Ausschreibung enthält Deckungswünsche |
+| 15 | RESPONDS_WITH | Insurer | Offer | 1:n | — | Versicherer gibt Angebot ab |
+| 16 | FOR_SUBMISSION | Offer | Submission | n:1 | — | Angebot auf Ausschreibung |
+| 17 | CONTAINS | Offer | CoverageOffer | 1:n | — | Angebot enthält Deckungsangebote |
+| 18 | RESPONDS_TO | CoverageOffer | CoverageRequest | n:1 | — | Deckungsangebot beantwortet Deckungswunsch |
+| 19 | BASED_ON | CoverageOffer | CoverageDefinition | n:1 | — | Deckungsangebot basiert auf Produktdeckung |
+| **Vertrag (Police)** | | | | | | |
+| 20 | BOUND_FROM | Policy | Offer | n:1 | — | Police entsteht aus akzeptiertem Angebot |
+| 21 | INSURES | Policy | Customer | n:1 | — | Police versichert Kunden |
+| 22 | BROKERED_BY | Policy | Broker | n:1 | — | Police wird von Makler verwaltet |
+| 23 | UNDERWRITTEN_BY | Policy | Insurer | n:m | share | Versicherer trägt das Risiko (Anteil in %) |
+| 24 | HAS_COVERAGE | Policy | PolicyCoverage | 1:n | — | Police hat Deckungsbausteine |
+| 25 | COVERS_RISK | PolicyCoverage | Risk | n:1 | — | Deckung deckt spezifisches Risiko |
+| 26 | BASED_ON_DEF | PolicyCoverage | CoverageDefinition | n:1 | — | Deckung basiert auf Definition |
+| 27 | HAS_ENDORSEMENT | Policy | Endorsement | 1:n | — | Police hat Nachträge |
+| **Schadenmanagement** | | | | | | |
+| 28 | AGAINST_POLICY | Claim | Policy | n:1 | — | Schaden gegen Police |
+| 29 | AFFECTS_OBJECT | Claim | InsurableObject | n:1 | — | Schaden betrifft Objekt |
+| 30 | AFFECTS_COVERAGE | Claim | PolicyCoverage | n:n | claimedAmount | Schaden betrifft Deckung |
+| 31 | HAS_SETTLEMENT | Claim | ClaimSettlement | 1:n | — | Regulierungsschritte |
+| **Flexible Attribute** | | | | | | |
+| 32 | HAS_ATTRIBUTE | InsurableObject | CustomAttribute | 1:n | — | Objekt hat Zusatzattribut |
+| 33 | DEFINED_BY | CustomAttribute | AttributeTemplate | n:1 | — | Attribut folgt Template |
+
+### Beziehungs-Properties (Detail)
+
+#### WORKS_FOR
+| Property | Neo4j-Typ | Pflicht | Beschreibung |
+|----------|-----------|---------|-------------|
+| role | String | Nein | Funktion beim Partner (z.B. "Risk Manager", "Underwriter") |
+| since | Date | Nein | Zugehörigkeit seit |
+
+#### MANAGES_ACCOUNT
+| Property | Neo4j-Typ | Pflicht | Beschreibung |
+|----------|-----------|---------|-------------|
+| since | Date | Nein | Betreuung seit |
+
+#### OWNS
+| Property | Neo4j-Typ | Pflicht | Beschreibung |
+|----------|-----------|---------|-------------|
+| since | Date | Nein | Besitz seit |
+
+#### UNDERWRITTEN_BY
+| Property | Neo4j-Typ | Pflicht | Beschreibung |
+|----------|-----------|---------|-------------|
+| share | Float | Ja | Anteil des Versicherers in % (z.B. 70.0 für 70%) |
+
+#### HAS_CLAUSE
+| Property | Neo4j-Typ | Pflicht | Beschreibung |
+|----------|-----------|---------|-------------|
+| mandatory | Boolean | Ja | Pflichtklausel (true) oder optional (false) |
+
+#### AFFECTS_COVERAGE
+| Property | Neo4j-Typ | Pflicht | Beschreibung |
+|----------|-----------|---------|-------------|
+| claimedAmount | Float | Nein | Beanspruchter Betrag pro Deckungsbaustein in EUR |
 
 ---
 
 ## 4. Diagramm
 
-*[Wird in Schritt 1d ergänzt]*
+Siehe: `diagrams/ontology-overview.mermaid`
+
+```mermaid
+graph LR
+    subgraph Partner
+        Customer["Customer"]
+        Insurer["Insurer"]
+        Broker["Broker"]
+        Contact["Contact"]
+    end
+
+    subgraph Objekte
+        InsurableObject["InsurableObject"]
+        Risk["Risk"]
+        CoverageRequest["CoverageRequest"]
+    end
+
+    subgraph Produkte
+        InsuranceLine["InsuranceLine"]
+        InsuranceProduct["InsuranceProduct"]
+        CoverageDef["CoverageDefinition"]
+        Clause["Clause"]
+    end
+
+    subgraph Prozess
+        Submission["Submission"]
+        Offer["Offer"]
+        CoverageOffer["CoverageOffer"]
+    end
+
+    subgraph Vertrag
+        Policy["Policy"]
+        PolicyCoverage["PolicyCoverage"]
+        Endorsement["Endorsement"]
+    end
+
+    subgraph Schaden
+        Claim["Claim"]
+        ClaimSettlement["ClaimSettlement"]
+    end
+
+    Customer -->|HAS_SUBSIDIARY| Customer
+    Contact -->|WORKS_FOR| Customer
+    Broker -->|MANAGES_ACCOUNT| Customer
+    Customer -->|OWNS| InsurableObject
+    InsurableObject -->|HAS_RISK| Risk
+    Risk -->|HAS_COVERAGE_REQUEST| CoverageRequest
+    Insurer -->|OFFERS| InsuranceProduct
+    InsuranceProduct -->|BELONGS_TO_LINE| InsuranceLine
+    InsuranceLine -->|HAS_SUBLINE| InsuranceLine
+    InsuranceProduct -->|HAS_COVERAGE_DEF| CoverageDef
+    CoverageDef -->|HAS_CLAUSE| Clause
+    Broker -->|SUBMITS| Submission
+    Submission -->|FOR_CUSTOMER| Customer
+    Submission -->|INCLUDES_REQUEST| CoverageRequest
+    Insurer -->|RESPONDS_WITH| Offer
+    Offer -->|FOR_SUBMISSION| Submission
+    Offer -->|CONTAINS| CoverageOffer
+    CoverageOffer -->|RESPONDS_TO| CoverageRequest
+    CoverageOffer -->|BASED_ON| CoverageDef
+    Policy -->|BOUND_FROM| Offer
+    Policy -->|INSURES| Customer
+    Policy -->|BROKERED_BY| Broker
+    Policy -->|UNDERWRITTEN_BY| Insurer
+    Policy -->|HAS_COVERAGE| PolicyCoverage
+    PolicyCoverage -->|COVERS_RISK| Risk
+    PolicyCoverage -->|BASED_ON_DEF| CoverageDef
+    Policy -->|HAS_ENDORSEMENT| Endorsement
+    Claim -->|AGAINST_POLICY| Policy
+    Claim -->|AFFECTS_OBJECT| InsurableObject
+    Claim -->|AFFECTS_COVERAGE| PolicyCoverage
+    Claim -->|HAS_SETTLEMENT| ClaimSettlement
+```
 
 ---
 
 ## 5. Beispiel-Szenario
 
-*[Wird in Schritt 1d ergänzt]*
+### Szenario-Beschreibung
+**Müller Automotive GmbH** (Stuttgart, Automobilzulieferer, 500 Mio. EUR Umsatz) mit Tochtergesellschaft **Müller Components GmbH** (Garching bei München). Der Versicherungsmakler **Marsh Deutschland** betreut den Kunden und schreibt ein Sachversicherungspaket aus. **Allianz Versicherung** (70%-Anteil) und **Munich Re** (30%-Anteil) zeichnen gemeinsam die Sachversicherung. Allianz zeichnet zusätzlich eine separate Flottenversicherung. Ein Maschinenbruch am CNC-Fräszentrum führt zu einem Schadenfall mit Teil- und Schlussregulierung.
+
+### Datenübersicht
+| Node-Typ | Anzahl | Beispiele |
+|----------|--------|-----------|
+| Partner:Customer | 2 | Müller Automotive, Müller Components |
+| Partner:Insurer | 2 | Allianz Versicherung, Munich Re |
+| Partner:Broker | 1 | Marsh Deutschland |
+| Partner:Contact | 3 | Hans Weber (Risk Manager), Lisa Schmidt (Account Manager), Thomas Klein (Underwriter) |
+| InsurableObject:Building | 2 | Produktionshalle Stuttgart, Lagerhalle München |
+| InsurableObject:Machine | 2 | CNC-Fräszentrum DMG MORI, Spritzgussanlage Arburg |
+| InsurableObject:Vehicle | 2 | BMW 530d, Mercedes Actros |
+| Risk | 6 | 2x Feuer, 2x Maschinenbruch, 2x Fahrzeugschaden |
+| CoverageRequest | 5 | je Risiko (ohne Lagerhalle München) |
+| InsuranceLine | 5 | Sachversicherung, Feuer, Maschinenversicherung, Kfz, Flotte |
+| InsuranceProduct | 3 | Allianz Property All Risk, Allianz Flotte, Munich Re Industrial Property |
+| CoverageDefinition | 4 | Feuerdeckung, Maschinenbruch, Kfz-Vollkasko, Feuerdeckung XL |
+| Clause | 3 | AFB, AMB, AKB |
+| Submission | 1 | Ausschreibung Müller Automotive 2024 |
+| Offer | 3 | Allianz Property, Munich Re Property, Allianz Flotte |
+| CoverageOffer | 6 | je Deckungswunsch + Munich Re Exzedentendeckung |
+| Policy | 2 | POL-2024-001 (Sach), POL-2024-002 (Flotte) |
+| PolicyCoverage | 5 | Feuer, 2x Maschinenbruch, 2x Kfz |
+| Endorsement | 1 | Nachversicherung Spritzgussanlage |
+| Claim | 1 | Maschinenbruch CNC-Fräszentrum (CLM-2024-001) |
+| ClaimSettlement | 2 | Teilregulierung 400k, Schlussregulierung 350k |
+| AttributeTemplate | 2 | Tragfähigkeit Boden, Spindelgeschwindigkeit |
+| CustomAttribute | 2 | 5.0 t/m², 12000 U/min |
+
+Siehe: `cypher/02-example-data.cypher`
+
+### Beispiel-Queries
+
+Alle 8 Analytics Use Cases sind in `cypher/03-example-queries.cypher` implementiert:
+
+1. **Objektbestand**: Konzernweite Objektübersicht inkl. Tochtergesellschaften (variable-length traversal)
+2. **Deckungszuordnung**: Vollständige Kette Objekt → Risiko → Deckung → Vertrag + Soll/Ist-Vergleich
+3. **Beteiligte Versicherer**: Anteile pro Police und aggregiert pro Kunde
+4. **Risikokonzentration**: Nach Standort, Branche und Gesamtdeckungssumme
+5. **Makler-Performance**: Prämienvolumen, Kundenportfolio, Durchschnittsprämie
+6. **Deckungslücken**: Ungedeckte Risiken + Unterdeckung (Versicherungswert > Deckungssumme)
+7. **Mehrfachdeckungen**: Risiken mit mehreren aktiven PolicyCoverages
+8. **Schadenquoten**: Pro Deckung, Kunde, Versicherer und Sparte
 
 ---
 
@@ -389,16 +580,19 @@ Standardmässig erhalten alle Nodes: `id` (String, Unique), `createdAt` (DateTim
 | 2 | Multi-Label für InsurableObject-Typen | Übergreifende Risiko-Analysen über :InsurableObject, typ-spezifische Abfragen über :Building/:Machine etc. Eigene Constraints pro Typ möglich. Neue Typen einfach hinzufügbar. | Einheitliches Label + type-Property (langsamer, kein Schema), Getrennte Labels ohne Basis-Label (übergreifende Queries umständlich) |
 | 3 | Partner-Modell mit Multi-Labels für Rollen | Company, Insurer, Broker, Contact werden zu Partner mit Rollen-Labels (:Partner:Customer, :Partner:Insurer etc.). Ermöglicht Mehrfachrollen (z.B. ein Unternehmen ist gleichzeitig Customer und Insurer). Einheitliche Partner-Verwaltung, weniger Redundanz. | Getrennte Entitäten (Redundanz bei gemeinsamen Properties, keine Mehrfachrollen), Rollen-Property (weniger performant bei Abfragen), Rollen-Node (aufwendiger) |
 | 4 | Person (InsurableObject) bleibt eigenständig | Versicherbare Schlüsselpersonen sind keine Geschäftspartner, sondern versicherbare Objekte. Getrennte Modellierung verhindert semantische Verwirrung. | Auch Person in Partner integrieren (vermischt zwei verschiedene Konzepte) |
+| 5 | Beziehungs-Properties nur wo nötig (max. 2 pro Relationship) | WORKS_FOR (role, since), MANAGES_ACCOUNT (since), OWNS (since), UNDERWRITTEN_BY (share), HAS_CLAUSE (mandatory), AFFECTS_COVERAGE (claimedAmount). Alle Beziehungen haben ≤2 Properties — gemäss Neo4j Best Practices kein Intermediate Node nötig. | Mehr Properties auf Beziehungen (unübersichtlich), alles als Intermediate Nodes (zu aufwändig für wenige Properties) |
+| 6 | UNDERWRITTEN_BY mit share-Property statt Intermediate Node | Beteiligung eines Versicherers an einer Police wird über share-Property abgebildet. Reicht für den aktuellen Scope. Sollte Quota Share, Layer-Struktur oder Rückversicherung hinzukommen, kann zu einem Intermediate Node "Participation" erweitert werden. | Sofort als Intermediate Node (Overengineering für den aktuellen Scope) |
+| 7 | Mitversicherung über n:m UNDERWRITTEN_BY | Eine Police kann von mehreren Versicherern gezeichnet werden (je mit eigenem share). Ermöglicht einfache Abfrage der Beteiligungsstruktur. | Separates Co-Insurance-Node (zu komplex für den Erstdurchlauf) |
 
 ---
 
 ## 7. Offene Punkte
 
-- [ ] Beziehungen definieren (Schritt 1c)
-- [ ] Detaillierung der Objekttyp-spezifischen Attribute
 - [ ] Prämienberechnung: Modellierung von Tarifen und Berechnungslogik
-- [ ] Dokumentenmanagement (Policen-Dokumente, Schadenberichte etc.)
-- [ ] Benutzer/Rollen-Modell (Underwriter, Sachbearbeiter etc.)
-- [ ] Historisierung/Versionierung von Vertrags- und Deckungsänderungen
-- [ ] Konzernstruktur: HAS_SUBSIDIARY Selbstreferenz auf Partner:Customer
-- [ ] Spartenhierarchie: HAS_SUBLINE Selbstreferenz auf InsuranceLine
+- [ ] Dokumentenmanagement: Policen-Dokumente, Schadenberichte, Korrespondenz
+- [ ] Benutzer/Rollen-Modell: Underwriter, Sachbearbeiter, Admin etc.
+- [ ] Historisierung/Versionierung: Zeitliche Nachverfolgung von Vertrags- und Deckungsänderungen
+- [ ] Mitversicherung erweitern: Quota Share, Excess of Loss, Layer-Struktur als Intermediate Node
+- [ ] Rückversicherung: Modellierung von Rückversicherungsverträgen und -beteiligungen
+- [ ] Detaillierung Objekttyp-Attribute: Systematischer Ausbau der CustomAttribute-Templates pro Objekttyp
+- [ ] Risiko-Lagerhalle München: Deckungswunsch und Policenzuordnung für risk-006 ergänzen (aktuell ungedeckt im Beispiel — bewusst als Deckungslücke für Use Case 6)
