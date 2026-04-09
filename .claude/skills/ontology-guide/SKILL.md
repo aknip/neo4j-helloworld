@@ -30,12 +30,41 @@ Prüfe das übergebene Argument:
 - **Text-Argument** (z.B. "E-Commerce"): Verwende als Domänenname, starte direkt mit Domain Discovery
 - **Dateipfad-Argument**: Lies die Datei ein, extrahiere Domäne und vorhandene Entitäten/Beziehungen, starte mit vorausgefüllter Domain Discovery
 
+## Arbeitsverzeichnis-Auswahl
+
+**Zu Beginn jeder Session** muss das Arbeitsverzeichnis für die Ontologie festgelegt werden. Alle generierten Dateien (Spezifikation, Cypher-Skripte, Diagramme) werden direkt in diesem Verzeichnis abgelegt.
+
+### Ablauf:
+
+1. **Suche nach bestehenden Ontologie-Verzeichnissen**: Suche im aktuellen Repository nach Verzeichnissen, deren Name mit `Ontology_` beginnt (z.B. `Ontology_Insurance`, `Ontology_CRM`).
+
+2. **Ergebnis präsentieren**:
+   - **Verzeichnisse gefunden**: Zeige sie als nummerierte Liste an und biete zusätzlich die Option "Neues Ontologie-Verzeichnis anlegen":
+     ```
+     Ich habe folgende Ontologie-Verzeichnisse gefunden:
+     
+     1. Ontology_Insurance/
+     2. Ontology_CRM/
+     3. ➕ Neues Ontologie-Verzeichnis anlegen
+     
+     In welchem Verzeichnis möchtest du arbeiten?
+     ```
+   - **Keine Verzeichnisse gefunden**: Frage direkt nach dem gewünschten Verzeichnisnamen:
+     ```
+     Es gibt noch keine Ontologie-Verzeichnisse (Ontology_*) im Repo.
+     Wie soll das neue Verzeichnis heissen? (z.B. "Ontology_MeineDomäne")
+     ```
+
+3. **Neues Verzeichnis**: Wenn der Nutzer ein neues Verzeichnis wählt, stelle sicher, dass der Name mit `Ontology_` beginnt. Falls der Nutzer nur den Domänennamen angibt (z.B. "Insurance"), erstelle `Ontology_Insurance/`.
+
+4. **Arbeitsverzeichnis merken**: Speichere den gewählten Pfad als `ONTOLOGY_WORKDIR` und verwende ihn für alle weiteren Dateipfade in dieser Session. Beispiel: Wenn `ONTOLOGY_WORKDIR` = `Ontology_Insurance`, dann liegen alle Dateien unter `Ontology_Insurance/` (z.B. `Ontology_Insurance/ontology-spec.md`, `Ontology_Insurance/cypher/`).
+
 ## Zustandsverwaltung
 
-Prüfe zu Beginn, ob bereits eine Ontologie-Spezifikation existiert:
+Prüfe nach der Arbeitsverzeichnis-Auswahl, ob bereits eine Ontologie-Spezifikation existiert:
 
 ```
-_NOTES/ontology/ontology-spec.md
+{ONTOLOGY_WORKDIR}/ontology-spec.md
 ```
 
 - **Datei existiert**: Lies sie ein und biete das Vertiefungsmenü an (Phase 2)
@@ -59,7 +88,7 @@ Ziel: In ~10-15 Fragen eine erste vollständige Ontologie erstellen. Arbeite **b
 
 ### Schritt 1a: Domain Discovery (~3-5 Fragen)
 
-Stelle diese Fragen **nacheinander** (nicht alle auf einmal). Warte jeweils auf die Antwort:
+Stelle diese Fragen **einzeln** mit dem `AskUserQuestion`-Tool. Biete jeweils konkrete Antwortvorschläge an. Speichere nach jeder Antwort den Stand in `ontology-spec.md`. Warte jeweils auf die Antwort:
 
 1. **Domäne**: "Welche Domäne soll modelliert werden? Beschreibe kurz, worum es geht."
 2. **Bestehendes Modell**: "Gibt es ein bestehendes Dokument oder Datenmodell als Grundlage? (Dateipfad angeben oder 'nein')"
@@ -68,7 +97,7 @@ Stelle diese Fragen **nacheinander** (nicht alle auf einmal). Warte jeweils auf 
 4. **Analytics Use Cases**: "Welche Hauptfragen soll der Graph beantworten können? Nenne 3-5 typische Abfragen."
 
 **Nach diesem Schritt:**
-- Erstelle das Verzeichnis `_NOTES/ontology/` sowie Unterverzeichnisse `cypher/` und `diagrams/`
+- Erstelle das Verzeichnis `{ONTOLOGY_WORKDIR}/` sowie Unterverzeichnisse `cypher/` und `diagrams/`
 - Erstelle eine erste `ontology-spec.md` mit dem Domänen-Abschnitt (verwende das Template)
 - Erstelle einen Vorschlag für die **vollständige Entitätenliste** (auch abgeleitete Entitäten, die der Nutzer nicht explizit genannt hat)
 - Präsentiere den Vorschlag dem Nutzer
@@ -114,7 +143,7 @@ Erstdurchlauf abgeschlossen! Die Ontologie umfasst:
 - Y Relationship Types
 - Z Beispiel-Datensätze
 
-Alle Dateien liegen unter `_NOTES/ontology/`.
+Alle Dateien liegen unter `{ONTOLOGY_WORKDIR}/`.
 
 Was möchtest du als nächstes tun?
 [Vertiefungsmenü anzeigen]
@@ -229,8 +258,8 @@ Präsentiere Ergebnisse als Checkliste mit Status (OK / Warnung / Fehler).
 
 ## Wichtige Verhaltensregeln
 
-1. **Frage immer nur 1-3 Fragen auf einmal** - nicht den Nutzer mit Fragenkatalogen überwältigen
-2. **Mache immer einen konkreten Vorschlag** - der Nutzer soll bestätigen/anpassen, nicht von Null anfangen
+1. **Stelle immer nur EINE Frage auf einmal** - verwende dafür das `AskUserQuestion`-Tool und biete konkrete Antwortvorschläge an. Der Nutzer soll wählen/anpassen können, nicht von Null anfangen. Formuliere die Frage klar und gib 2-5 sinnvolle Vorschläge als Optionen.
+2. **Persistiere nach JEDER Antwort** - speichere den aktuellen Stand sofort in `ontology-spec.md` und ggf. weiteren Dateien. So ist die Arbeit jederzeit unterbrechbar und kann in einer neuen Session nahtlos fortgesetzt werden.
 3. **Aktualisiere Dateien inkrementell** - nach jedem Schritt die betroffenen Dateien anpassen
 4. **Zeige nach jeder Änderung das Vertiefungsmenü** (in Phase 2)
 5. **Sei proaktiv bei Empfehlungen** - wenn du ein Anti-Pattern erkennst, weise darauf hin
