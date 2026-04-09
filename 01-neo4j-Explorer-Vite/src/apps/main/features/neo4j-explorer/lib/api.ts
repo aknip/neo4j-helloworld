@@ -68,3 +68,6 @@ export const saveSettings = (settings: ExplorerSettings) =>
 
 export const reinitSettings = () =>
   api.post<ExplorerSettings>('/settings/init').then((r) => r.data)
+
+export const translateSettings = () =>
+  api.post<ExplorerSettings>('/settings/translate').then((r) => r.data)

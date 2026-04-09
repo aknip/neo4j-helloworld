@@ -139,3 +139,121 @@ settingsRouter.post('/init', async (_req, res) => {
     res.status(500).json({ error: String(err) })
   }
 })
+
+// POST /api/settings/translate — translate displayNames to German via OpenRouter LLM
+settingsRouter.post('/translate', async (_req, res) => {
+  try {
+    const apiKey = process.env.OPENROUTER_API_KEY
+    if (!apiKey) {
+      res.status(500).json({ error: 'OPENROUTER_API_KEY ist nicht konfiguriert' })
+      return
+    }
+
+    const settings = readSettings()
+    if (!settings) {
+      res.status(400).json({ error: 'Keine Einstellungen vorhanden. Bitte zuerst Schema laden.' })
+      return
+    }
+
+    // Create backup
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+    const backupFile = path.join(DATA_DIR, `explorer-settings.backup-${timestamp}.json`)
+    fs.writeFileSync(backupFile, JSON.stringify(settings, null, 2), 'utf-8')
+
+    // Build translation payload (only displayName values)
+    const payload: Record<string, Record<string, string>> = {
+      labels: {},
+      properties: {},
+      relationshipTypes: {},
+    }
+    for (const [key, val] of Object.entries(settings.labels)) {
+      payload.labels[key] = val.displayName
+    }
+    for (const [key, val] of Object.entries(settings.properties)) {
+      payload.properties[key] = val.displayName
+    }
+    for (const [key, val] of Object.entries(settings.relationshipTypes)) {
+      payload.relationshipTypes[key] = val.displayName
+    }
+
+    // Call OpenRouter API
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.0-flash-001',
+        temperature: 0,
+        messages: [
+          {
+            role: 'system',
+            content:
+              'Du bist ein Übersetzer für eine Versicherungs-Software. Übersetze die Werte im folgenden JSON ins Deutsche. ' +
+              'Die JSON-Struktur muss unverändert bleiben, die Keys dürfen nicht übersetzt werden, nur die Values. ' +
+              'Übersetze auf Deutsch mit Umlauten (ä,ö,ü), ersteze "_" durch " ", ersetze Camel-Case-Schreibung durch korrekte Worttrennung mit Leerzeichen, passe immer auf die korrekte deutsche Groß-/Kleinschreibung an, schreibe niemals in VERSALIEN. ' +
+              'Beispiele: Übersetze "AFFECTS_COVERAGE" in "beeinflusst Deckung" . Übersetze "changeDescription" in "ändere Beschreibung" . ' +
+              'Fachbegriffe aus der Versicherungsbranche sollen korrekt übersetzt werden. ' +
+              'Antworte NUR mit dem JSON, ohne Markdown-Codeblöcke oder Erklärungen.',
+          },
+          {
+            role: 'user',
+            content: JSON.stringify(payload, null, 2),
+          },
+        ],
+      }),
+    })
+
+    if (!response.ok) {
+      const body = await response.text()
+      res.status(502).json({ error: `Übersetzungs-API Fehler: ${response.status} ${body}` })
+      return
+    }
+
+    const data = (await response.json()) as {
+      choices: Array<{ message: { content: string } }>
+    }
+
+    // Parse LLM response — strip markdown fences defensively
+    let content = data.choices?.[0]?.message?.content ?? ''
+    const fenceMatch = content.match(/```(?:json)?\s*([\s\S]*?)```/)
+    if (fenceMatch) content = fenceMatch[1]
+    content = content.trim()
+
+    let translated: Record<string, Record<string, string>>
+    try {
+      translated = JSON.parse(content)
+    } catch {
+      res.status(502).json({ error: 'Ungültige Antwort vom Übersetzungsmodell' })
+      return
+    }
+
+    if (!translated.labels || !translated.properties || !translated.relationshipTypes) {
+      res.status(502).json({ error: 'Unerwartete Antwortstruktur vom Übersetzungsmodell' })
+      return
+    }
+
+    // Merge translated displayNames back, preserving all other fields
+    for (const [key, val] of Object.entries(settings.labels)) {
+      if (translated.labels[key]) {
+        settings.labels[key] = { ...val, displayName: translated.labels[key] }
+      }
+    }
+    for (const [key, val] of Object.entries(settings.properties)) {
+      if (translated.properties[key]) {
+        settings.properties[key] = { ...val, displayName: translated.properties[key] }
+      }
+    }
+    for (const [key, val] of Object.entries(settings.relationshipTypes)) {
+      if (translated.relationshipTypes[key]) {
+        settings.relationshipTypes[key] = { ...val, displayName: translated.relationshipTypes[key] }
+      }
+    }
+
+    writeSettings(settings)
+    res.json(settings)
+  } catch (err) {
+    res.status(500).json({ error: String(err) })
+  }
+})

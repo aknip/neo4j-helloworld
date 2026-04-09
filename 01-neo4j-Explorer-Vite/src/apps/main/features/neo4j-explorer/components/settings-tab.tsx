@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { fetchSettings, saveSettings, reinitSettings } from '../lib/api'
+import { fetchSettings, saveSettings, reinitSettings, translateSettings } from '../lib/api'
 import type { ExplorerSettings } from '../lib/types'
 import { Button } from '@/apps/main/components/ui/button'
 import { Input } from '@/apps/main/components/ui/input'
@@ -28,6 +28,7 @@ export function SettingsTab() {
   const [draft, setDraft] = useState<ExplorerSettings | null>(null)
   const [saving, setSaving] = useState(false)
   const [reiniting, setReiniting] = useState(false)
+  const [translating, setTranslating] = useState(false)
 
   // Sync draft when settings load
   useEffect(() => {
@@ -66,6 +67,24 @@ export function SettingsTab() {
       toast.error(`Fehler: ${err}`)
     } finally {
       setReiniting(false)
+    }
+  }
+
+  const handleTranslate = async () => {
+    setTranslating(true)
+    try {
+      const translated = await translateSettings()
+      setDraft(structuredClone(translated))
+      queryClient.invalidateQueries({ queryKey: ['explorer-settings'] })
+      toast.success('Übersetzungen wurden angelegt')
+    } catch (err: unknown) {
+      const msg =
+        err && typeof err === 'object' && 'response' in err
+          ? (err as { response?: { data?: { error?: string } } }).response?.data?.error ?? String(err)
+          : String(err)
+      toast.error(`Fehler bei Übersetzung: ${msg}`)
+    } finally {
+      setTranslating(false)
     }
   }
 
@@ -140,6 +159,9 @@ export function SettingsTab() {
         </Button>
         <Button variant='outline' onClick={handleReinit} disabled={reiniting}>
           {reiniting ? 'Lade...' : 'Schema neu laden'}
+        </Button>
+        <Button variant='outline' onClick={handleTranslate} disabled={translating}>
+          {translating ? 'Übersetze...' : 'Übersetzungen anlegen'}
         </Button>
         {isDirty && (
           <span className='text-muted-foreground text-sm'>
