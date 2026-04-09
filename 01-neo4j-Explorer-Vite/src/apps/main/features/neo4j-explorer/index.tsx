@@ -15,6 +15,7 @@ import { ExplorerTab } from './components/explorer-tab'
 import { SearchTab } from './components/search-tab'
 import { SchemaTab } from './components/schema-tab'
 import { ImportTab } from './components/import-tab'
+import { SettingsTab } from './components/settings-tab'
 
 export function Neo4jExplorer() {
   const { activeTab, setActiveTab } = useExplorerState()
@@ -41,6 +42,7 @@ export function Neo4jExplorer() {
             <TabsTrigger value='search'>Suche</TabsTrigger>
             <TabsTrigger value='schema'>Schema</TabsTrigger>
             <TabsTrigger value='import'>Import</TabsTrigger>
+            <TabsTrigger value='settings'>Einstellungen</TabsTrigger>
           </TabsList>
 
           <TabsContent value='graph' className='mt-4'>
@@ -57,6 +59,9 @@ export function Neo4jExplorer() {
           </TabsContent>
           <TabsContent value='import' className='mt-4'>
             <ImportTab />
+          </TabsContent>
+          <TabsContent value='settings' className='mt-4'>
+            <SettingsTab />
           </TabsContent>
         </Tabs>
       </Main>

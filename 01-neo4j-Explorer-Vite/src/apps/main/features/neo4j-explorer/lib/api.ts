@@ -6,6 +6,7 @@ import type {
   RelTypeSchema,
   SearchResult,
   ImportResponse,
+  ExplorerSettings,
 } from './types'
 
 const api = axios.create({ baseURL: '/api' })
@@ -57,3 +58,13 @@ export const fetchImportFiles = (dir: string) =>
 
 export const resetAndImport = (dir: string) =>
   api.post<ImportResponse>('/import/reset-and-import', { dir }).then((r) => r.data)
+
+// Settings
+export const fetchSettings = () =>
+  api.get<ExplorerSettings>('/settings').then((r) => r.data)
+
+export const saveSettings = (settings: ExplorerSettings) =>
+  api.put<ExplorerSettings>('/settings', settings).then((r) => r.data)
+
+export const reinitSettings = () =>
+  api.post<ExplorerSettings>('/settings/init').then((r) => r.data)

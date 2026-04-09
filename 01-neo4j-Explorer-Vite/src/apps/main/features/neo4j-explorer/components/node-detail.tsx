@@ -12,6 +12,7 @@ import {
 } from '../lib/api'
 import { useExplorerState } from '../hooks/use-explorer-state'
 import { displayName, primaryLabel, labelColor } from '../lib/utils'
+import { useSettings } from '../hooks/use-settings'
 import { Button } from '@/apps/main/components/ui/button'
 import { Input } from '@/apps/main/components/ui/input'
 import { Label } from '@/apps/main/components/ui/label'
@@ -42,6 +43,7 @@ import { ArrowRight, ArrowLeft, Trash2, ExternalLink } from 'lucide-react'
 export function NodeDetail() {
   const { selectedEid, setMode, setEid, setLabel, navigateToNode } =
     useExplorerState()
+  const { labelDisplayName, propertyDisplayName, relTypeDisplayName } = useSettings()
   const queryClient = useQueryClient()
 
   const { data, isLoading, error } = useQuery({
@@ -73,7 +75,7 @@ export function NodeDetail() {
   }
 
   const { node, outRels, inRels } = data
-  const labelsStr = node.labels.map((l) => `:${l}`).join(', ')
+  const labelsStr = node.labels.map((l) => `:${labelDisplayName(l)}`).join(', ')
 
   return (
     <div className='space-y-6'>
@@ -116,6 +118,7 @@ export function NodeDetail() {
       <PropertyEditor
         eid={selectedEid}
         props={node.props}
+        propertyDisplayName={propertyDisplayName}
         onSaved={() => {
           queryClient.invalidateQueries({
             queryKey: ['node-detail', selectedEid],
@@ -129,6 +132,8 @@ export function NodeDetail() {
       <RelationshipSection
         title={`Ausgehende Beziehungen (${outRels.length})`}
         icon={<ArrowRight className='h-4 w-4' />}
+        labelDisplayName={labelDisplayName}
+        relTypeDisplayName={relTypeDisplayName}
         rels={outRels.map((r) => ({
           relId: r.relId,
           type: r.type,
@@ -152,6 +157,8 @@ export function NodeDetail() {
       <RelationshipSection
         title={`Eingehende Beziehungen (${inRels.length})`}
         icon={<ArrowLeft className='h-4 w-4' />}
+        labelDisplayName={labelDisplayName}
+        relTypeDisplayName={relTypeDisplayName}
         rels={inRels.map((r) => ({
           relId: r.relId,
           type: r.type,
@@ -176,6 +183,8 @@ export function NodeDetail() {
       {/* Beziehung erstellen */}
       <CreateRelationshipSection
         fromEid={selectedEid}
+        labelDisplayName={labelDisplayName}
+        relTypeDisplayName={relTypeDisplayName}
         onCreated={() => {
           queryClient.invalidateQueries({
             queryKey: ['node-detail', selectedEid],
@@ -189,10 +198,12 @@ export function NodeDetail() {
 function PropertyEditor({
   eid,
   props,
+  propertyDisplayName,
   onSaved,
 }: {
   eid: string
   props: Record<string, unknown>
+  propertyDisplayName: (prop: string) => string
   onSaved: () => void
 }) {
   const [values, setValues] = useState<Record<string, string>>(() =>
@@ -223,7 +234,7 @@ function PropertyEditor({
       <div className='grid gap-3'>
         {Object.entries(values).map(([k, v]) => (
           <div key={k} className='grid grid-cols-[200px_1fr] items-center gap-3'>
-            <Label className='text-muted-foreground text-sm'>{k}</Label>
+            <Label className='text-muted-foreground text-sm'>{propertyDisplayName(k)}</Label>
             <Input
               value={v}
               onChange={(e) =>
@@ -297,12 +308,16 @@ function RelationshipSection({
   title,
   icon,
   rels,
+  labelDisplayName,
+  relTypeDisplayName,
   onNavigate,
   onDelete,
 }: {
   title: string
   icon: React.ReactNode
   rels: RelRow[]
+  labelDisplayName: (label: string) => string
+  relTypeDisplayName: (type: string) => string
   onNavigate: (eid: string, label: string) => void
   onDelete: (relId: string) => void
 }) {
@@ -328,19 +343,19 @@ function RelationshipSection({
               <span className='flex-1'>
                 {r.direction === 'out' ? (
                   <>
-                    -[:<Badge variant='outline'>{r.type}</Badge>
+                    -[:<Badge variant='outline'>{relTypeDisplayName(r.type)}</Badge>
                     {relPropsStr}]-&gt; {otherName}{' '}
                     <span className='text-muted-foreground'>
-                      (:{otherLabel})
+                      (:{labelDisplayName(otherLabel)})
                     </span>
                   </>
                 ) : (
                   <>
                     {otherName}{' '}
                     <span className='text-muted-foreground'>
-                      (:{otherLabel})
+                      (:{labelDisplayName(otherLabel)})
                     </span>{' '}
-                    -[:<Badge variant='outline'>{r.type}</Badge>
+                    -[:<Badge variant='outline'>{relTypeDisplayName(r.type)}</Badge>
                     {relPropsStr}]-&gt;
                   </>
                 )}
@@ -370,9 +385,13 @@ function RelationshipSection({
 
 function CreateRelationshipSection({
   fromEid,
+  labelDisplayName,
+  relTypeDisplayName,
   onCreated,
 }: {
   fromEid: string
+  labelDisplayName: (label: string) => string
+  relTypeDisplayName: (type: string) => string
   onCreated: () => void
 }) {
   const [relType, setRelType] = useState('')
@@ -426,7 +445,7 @@ function CreateRelationshipSection({
             <SelectContent>
               {allRelTypes.map((t) => (
                 <SelectItem key={t} value={t}>
-                  {t}
+                  {relTypeDisplayName(t)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -448,7 +467,7 @@ function CreateRelationshipSection({
             <SelectContent>
               {allLabels.map((l) => (
                 <SelectItem key={l} value={l}>
-                  {l}
+                  {labelDisplayName(l)}
                 </SelectItem>
               ))}
             </SelectContent>

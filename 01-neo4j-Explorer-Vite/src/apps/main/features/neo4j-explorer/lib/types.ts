@@ -51,3 +51,23 @@ export interface SearchResult {
   props: Record<string, unknown>
   hits: string[]
 }
+
+export interface LabelSettings {
+  visible: boolean
+  displayName: string
+}
+
+export interface PropertySettings {
+  displayName: string
+}
+
+export interface RelTypeSettings {
+  displayName: string
+}
+
+export interface ExplorerSettings {
+  version: number
+  labels: Record<string, LabelSettings>
+  properties: Record<string, PropertySettings>
+  relationshipTypes: Record<string, RelTypeSettings>
+}

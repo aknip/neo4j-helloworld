@@ -7,6 +7,7 @@ import { relationshipsRouter } from './routes/relationships.js'
 import { searchRouter } from './routes/search.js'
 import { importRouter } from './routes/import.js'
 import { statsRouter } from './routes/stats.js'
+import { settingsRouter } from './routes/settings.js'
 
 const app = express()
 const PORT = 3001
@@ -20,6 +21,7 @@ app.use('/api/relationships', relationshipsRouter)
 app.use('/api/search', searchRouter)
 app.use('/api/import', importRouter)
 app.use('/api/stats', statsRouter)
+app.use('/api/settings', settingsRouter)
 
 app.listen(PORT, () => {
   console.log(`Neo4j Explorer API running on http://localhost:${PORT}`)

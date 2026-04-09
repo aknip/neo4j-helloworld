@@ -3,6 +3,7 @@ import cytoscape, { type Core } from 'cytoscape'
 import { useQuery } from '@tanstack/react-query'
 import { fetchLabels } from '../lib/api'
 import { displayName, labelColor, primaryLabel } from '../lib/utils'
+import { useSettings } from '../hooks/use-settings'
 import { Button } from '@/apps/main/components/ui/button'
 import { Skeleton } from '@/apps/main/components/ui/skeleton'
 import axios from 'axios'
@@ -30,19 +31,22 @@ export function GraphTab() {
   const [focusNodeId, setFocusNodeId] = useState<string | null>(null)
   const [focusDepth, setFocusDepth] = useState<FocusDepth>(null)
 
+  const { labelDisplayName, isLabelVisible, propertyDisplayName, relTypeDisplayName } = useSettings()
+
   const { data: labels, isLoading: labelsLoading } = useQuery({
     queryKey: ['schema', 'labels'],
     queryFn: fetchLabels,
   })
 
   const allLabels = labels?.map((l) => l.label).sort() ?? []
+  const visibleLabels = allLabels.filter((l) => isLabelVisible(l))
 
-  // Auto-select all labels on first load only
+  // Auto-select all visible labels on first load only
   useEffect(() => {
-    if (allLabels.length > 0 && selectedLabels === null) {
-      setSelectedLabels(allLabels)
+    if (visibleLabels.length > 0 && selectedLabels === null) {
+      setSelectedLabels(visibleLabels)
     }
-  }, [allLabels])
+  }, [visibleLabels])
 
   const activeLabels = selectedLabels ?? []
 
@@ -80,7 +84,7 @@ export function GraphTab() {
           color,
           tooltip: Object.entries(n.props)
             .filter(([k]) => !['createdAt', 'updatedAt'].includes(k))
-            .map(([k, v]) => `${k}: ${v}`)
+            .map(([k, v]) => `${propertyDisplayName(k)}: ${v}`)
             .join('\n'),
         },
       })
@@ -92,7 +96,7 @@ export function GraphTab() {
           id: `${r.source}-${r.type}-${r.target}`,
           source: r.source,
           target: r.target,
-          label: r.type,
+          label: relTypeDisplayName(r.type),
         },
       })
     }
@@ -300,17 +304,17 @@ export function GraphTab() {
               size='sm'
               onClick={() =>
                 setSelectedLabels(
-                  activeLabels.length === allLabels.length ? [] : allLabels
+                  activeLabels.length === visibleLabels.length ? [] : visibleLabels
                 )
               }
             >
-              {activeLabels.length === allLabels.length
+              {activeLabels.length === visibleLabels.length
                 ? 'Keine'
                 : 'Alle'}
             </Button>
           </div>
           <div className='mt-2 grid grid-cols-2 gap-1'>
-            {allLabels.map((l) => {
+            {visibleLabels.map((l) => {
               const color = labelColor(l, allLabels)
               const count = labels?.find((lb) => lb.label === l)?.count ?? 0
               const checked = activeLabels.includes(l)
@@ -330,7 +334,7 @@ export function GraphTab() {
                     style={{ backgroundColor: color }}
                   />
                   <span className='text-xs'>
-                    {l}{' '}
+                    {labelDisplayName(l)}{' '}
                     <span className='text-muted-foreground'>({count})</span>
                   </span>
                 </label>

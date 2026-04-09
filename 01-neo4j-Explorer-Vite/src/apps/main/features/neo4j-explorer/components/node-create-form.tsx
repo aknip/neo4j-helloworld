@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { fetchNodeProperties, createNode } from '../lib/api'
+import { useSettings } from '../hooks/use-settings'
 import { Button } from '@/apps/main/components/ui/button'
 import { Input } from '@/apps/main/components/ui/input'
 import { Label } from '@/apps/main/components/ui/label'
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function NodeCreateForm({ label, onCreated, onCancel }: Props) {
+  const { propertyDisplayName } = useSettings()
   const { data: knownProps, isLoading } = useQuery({
     queryKey: ['node-properties', label],
     queryFn: () => fetchNodeProperties(label),
@@ -65,7 +67,7 @@ export function NodeCreateForm({ label, onCreated, onCancel }: Props) {
             key={prop}
             className='grid grid-cols-[200px_1fr] items-center gap-3'
           >
-            <Label>{prop}</Label>
+            <Label>{propertyDisplayName(prop)}</Label>
             <Input
               value={values[prop] ?? ''}
               onChange={(e) =>

@@ -8,6 +8,9 @@ build/
 # Neo4j data
 db/
 
+# Server runtime data
+01-neo4j-Explorer-Vite/server/data/
+
 # Test coverage
 coverage/
 

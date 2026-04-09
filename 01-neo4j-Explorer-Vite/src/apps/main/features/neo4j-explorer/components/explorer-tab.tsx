@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchLabels, fetchNodes } from '../lib/api'
 import { useExplorerState } from '../hooks/use-explorer-state'
 import { displayName, labelColor, primaryLabel } from '../lib/utils'
+import { useSettings } from '../hooks/use-settings'
 import { Button } from '@/apps/main/components/ui/button'
 import {
   Select,
@@ -16,6 +17,7 @@ import { NodeCreateForm } from './node-create-form'
 
 export function ExplorerTab() {
   const { selectedLabel, setLabel, mode, setMode, setEid } = useExplorerState()
+  const { labelDisplayName } = useSettings()
   const queryClient = useQueryClient()
 
   const { data: labels, isLoading: labelsLoading } = useQuery({
@@ -81,7 +83,7 @@ export function ExplorerTab() {
           <SelectContent>
             {allLabels.map((l) => (
               <SelectItem key={l} value={l}>
-                {l}
+                {labelDisplayName(l)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -127,7 +129,7 @@ export function ExplorerTab() {
                   />
                   <span className='font-medium'>{name}</span>
                   <span className='text-muted-foreground text-sm'>
-                    {n.labels.map((l) => `:${l}`).join(', ')}
+                    {n.labels.map((l) => `:${labelDisplayName(l)}`).join(', ')}
                   </span>
                 </button>
               )

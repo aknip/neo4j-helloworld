@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { searchNodes } from '../lib/api'
 import { useExplorerState } from '../hooks/use-explorer-state'
 import { displayName, primaryLabel, labelColor } from '../lib/utils'
+import { useSettings } from '../hooks/use-settings'
 import { Input } from '@/apps/main/components/ui/input'
 import { Badge } from '@/apps/main/components/ui/badge'
 import { Skeleton } from '@/apps/main/components/ui/skeleton'
@@ -11,6 +12,7 @@ export function SearchTab() {
   const [query, setQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
   const { navigateToNode } = useExplorerState()
+  const { labelDisplayName, propertyDisplayName } = useSettings()
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedQuery(query), 300)
@@ -68,9 +70,9 @@ export function SearchTab() {
                   style={{ backgroundColor: color }}
                 />
                 <span className='font-medium'>{name}</span>
-                <Badge variant='secondary'>{pLabel}</Badge>
+                <Badge variant='secondary'>{labelDisplayName(pLabel)}</Badge>
                 <span className='text-muted-foreground text-xs'>
-                  gefunden in: {r.hits.join(', ')}
+                  gefunden in: {r.hits.map((h) => propertyDisplayName(h)).join(', ')}
                 </span>
               </button>
             )

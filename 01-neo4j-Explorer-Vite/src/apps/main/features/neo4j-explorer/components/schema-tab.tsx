@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { fetchLabels, fetchRelTypes } from '../lib/api'
+import { useSettings } from '../hooks/use-settings'
 import {
   Table,
   TableBody,
@@ -12,6 +13,7 @@ import { Badge } from '@/apps/main/components/ui/badge'
 import { Skeleton } from '@/apps/main/components/ui/skeleton'
 
 export function SchemaTab() {
+  const { labelDisplayName, propertyDisplayName, relTypeDisplayName } = useSettings()
   const {
     data: labels,
     isLoading: labelsLoading,
@@ -68,14 +70,14 @@ export function SchemaTab() {
             <TableBody>
               {labels?.map((l) => (
                 <TableRow key={l.label}>
-                  <TableCell className='font-medium'>{l.label}</TableCell>
+                  <TableCell className='font-medium'>{labelDisplayName(l.label)}</TableCell>
                   <TableCell className='text-right'>{l.count}</TableCell>
                   <TableCell>
                     <div className='flex flex-wrap gap-1'>
                       {l.properties.length > 0
                         ? l.properties.map((p) => (
                             <Badge key={p.property} variant='secondary'>
-                              {p.property}
+                              {propertyDisplayName(p.property)}
                               <span className='text-muted-foreground ml-1 text-xs'>
                                 ({p.types.join(', ') || '?'})
                               </span>
@@ -109,14 +111,14 @@ export function SchemaTab() {
             <TableBody>
               {relTypes?.map((r) => (
                 <TableRow key={r.type}>
-                  <TableCell className='font-medium'>{r.type}</TableCell>
+                  <TableCell className='font-medium'>{relTypeDisplayName(r.type)}</TableCell>
                   <TableCell className='text-right'>{r.count}</TableCell>
                   <TableCell>
                     <div className='flex flex-wrap gap-1'>
                       {r.properties.length > 0
                         ? r.properties.map((p) => (
                             <Badge key={p.property} variant='secondary'>
-                              {p.property}
+                              {propertyDisplayName(p.property)}
                               <span className='text-muted-foreground ml-1 text-xs'>
                                 ({p.types.join(', ') || '?'})
                               </span>
