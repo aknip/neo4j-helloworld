@@ -1,0 +1,105 @@
+/**
+ * Reference App Dark Theme
+ *
+ * Extrahierte CSS-Variablen aus dem bestehenden Reference-App Design.
+ * Enthält shadcn/ui Farbvariablen für Dark Mode und app-spezifische Styling-Variablen.
+ */
+
+:root {
+  /* ============================================
+   * shadcn/ui Farbvariablen (Dark Mode)
+   * ============================================ */
+
+  --radius: 0.625rem;
+  --background: oklch(0.129 0.042 264.695);
+  --foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.14 0.04 259.21);
+  --card-foreground: oklch(0.984 0.003 247.858);
+  --popover: oklch(0.208 0.042 265.755);
+  --popover-foreground: oklch(0.984 0.003 247.858);
+  --primary: oklch(0.929 0.013 255.508);
+  --primary-foreground: oklch(0.208 0.042 265.755);
+  --secondary: oklch(0.279 0.041 260.031);
+  --secondary-foreground: oklch(0.984 0.003 247.858);
+  --muted: oklch(0.279 0.041 260.031);
+  --muted-foreground: oklch(0.704 0.04 256.788);
+  --accent: oklch(0.279 0.041 260.031);
+  --accent-foreground: oklch(0.984 0.003 247.858);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.551 0.027 264.364);
+
+  /* Chart-Farben (Dark Mode) */
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+
+  /* Sidebar-Variablen */
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* ============================================
+   * Theme-spezifische Erweiterungen
+   * (gemäß Spezifikation 4.2)
+   * ============================================ */
+
+  /* Spacing Scale */
+  --theme-spacing-xs: 0.25rem;
+  --theme-spacing-sm: 0.75rem;
+  --theme-spacing-md: 1.25rem;
+  --theme-spacing-lg: 2rem;
+  --theme-spacing-xl: 2.5rem;
+  --theme-spacing-2xl: 3rem;
+
+  /* Typografie */
+  --theme-font-family: 'Inter', sans-serif;
+  --theme-font-size-xs: 0.75rem;
+  --theme-font-size-sm: 0.875rem;
+  --theme-font-size-base: 1rem;
+  --theme-font-size-lg: 1.125rem;
+  --theme-font-size-xl: 1.25rem;
+  --theme-font-size-2xl: 1.5rem;
+  --theme-line-height-tight: 1.2;
+  --theme-line-height-normal: 1.5;
+  --theme-line-height-relaxed: 1.75;
+
+  /* Border-Radien */
+  --theme-radius-sm: 4px;
+  --theme-radius-md: 8px;
+  --theme-radius-lg: 12px;
+
+  /* Schatten (angepasst für Dark Mode) */
+  --theme-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --theme-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+
+  /* Animationen */
+  --theme-transition-fast: 150ms ease-in-out;
+  --theme-transition-normal: 300ms ease-in-out;
+  --theme-transition-slow: 500ms ease-in-out;
+
+  /* Navigation */
+  --theme-nav-background: var(--background);
+  --theme-nav-border-color: var(--border);
+
+  /* Header */
+  --theme-header-background: var(--background);
+  --theme-header-border-color: var(--border);
+
+  /* Footer */
+  --theme-footer-background: var(--muted);
+}
+
+/* Dark Mode Marker für Body */
+html[data-theme="reference-app-OLD-dark"] {
+  color-scheme: dark;
+}

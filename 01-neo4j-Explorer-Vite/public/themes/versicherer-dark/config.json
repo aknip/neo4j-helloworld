@@ -1,0 +1,26 @@
+{
+  "name": "Versicherer Dark",
+
+  "layout": {
+    "type": "scrolling",
+    "maxWidth": "1200px",
+    "contentPadding": "20px",
+    "contentPaddingMobile": "16px"
+  },
+
+  "navigation": {
+    "position": "vertical-left",
+    "width": "280px",
+    "collapsedWidth": "64px",
+    "collapsible": true
+  },
+
+  "header": {
+    "height": "64px",
+    "sticky": true
+  },
+
+  "footer": {
+    "height": "48px"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "Reference App OLD Light",
+
+  "layout": {
+    "type": "scrolling",
+    "maxWidth": "1200px",
+    "headerMaxWidth": "1200px",
+    "contentPadding": "20px",
+    "contentPaddingMobile": "16px"
+  },
+
+  "navigation": {
+    "position": "vertical-centered",
+    "width": "280px",
+    "collapsedWidth": "64px",
+    "collapsible": true,
+    "collapsedByDefault": false
+  },
+
+  "header": {
+    "height": "64px",
+    "sticky": true
+  },
+
+  "footer": {
+    "height": "48px"
+  }
+}

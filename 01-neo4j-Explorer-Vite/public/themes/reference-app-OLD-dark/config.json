@@ -1,0 +1,27 @@
+{
+  "name": "Reference App OLD Dark",
+
+  "layout": {
+    "type": "scrolling",
+    "maxWidth": "1000px",
+    "headerMaxWidth": "1000px",
+    "contentPadding": "20px",
+    "contentPaddingMobile": "16px"
+  },
+
+  "navigation": {
+    "position": "vertical-centered",
+    "width": "280px",
+    "collapsedWidth": "64px",
+    "collapsible": true
+  },
+
+  "header": {
+    "height": "64px",
+    "sticky": true
+  },
+
+  "footer": {
+    "height": "48px"
+  }
+}

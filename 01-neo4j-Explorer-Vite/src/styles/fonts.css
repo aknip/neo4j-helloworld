@@ -1,0 +1,23 @@
+/* Local Font Imports via Fontsource (for Electron offline support) */
+
+/* Inter Font Family */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+/* Manrope Font Family */
+@import '@fontsource/manrope/400.css';
+@import '@fontsource/manrope/500.css';
+@import '@fontsource/manrope/600.css';
+@import '@fontsource/manrope/700.css';
+
+/* IBM Plex Serif Font Family */
+@import '@fontsource/ibm-plex-serif/400.css';
+@import '@fontsource/ibm-plex-serif/400-italic.css';
+@import '@fontsource/ibm-plex-serif/500.css';
+@import '@fontsource/ibm-plex-serif/500-italic.css';
+@import '@fontsource/ibm-plex-serif/600.css';
+@import '@fontsource/ibm-plex-serif/600-italic.css';
+@import '@fontsource/ibm-plex-serif/700.css';
+@import '@fontsource/ibm-plex-serif/700-italic.css';

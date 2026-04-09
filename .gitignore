@@ -1,16 +1,13 @@
-# Python
-__pycache__/
-*.py[cod]
-*.so
-*.egg-info/
+# Dependencies
+node_modules/
+
+# Build output
 dist/
 build/
-*.egg
+_NOTES/
 
-# Virtual environments
-.venv/
-venv/
-ENV/
+# Test coverage
+coverage/
 
 # IDE
 .idea/
@@ -22,5 +19,26 @@ ENV/
 .DS_Store
 Thumbs.db
 
-# Environment variables
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
 .env
+.env.local
+.env.*.local
+
+# Vite
+.vite/
+
+# TypeScript
+*.tsbuildinfo
+
+# Cache
+.cache/
+.eslintcache
+
+# Python
+.venv/
+__pycache__/
+*.pyc

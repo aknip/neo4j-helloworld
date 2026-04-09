@@ -1,0 +1,190 @@
+/**
+ * shadcn/create Light Theme
+ *
+ * OKLch color scheme from shadcn-create with JetBrains Mono font.
+ */
+
+:root {
+  /* shadcn/ui Farbvariablen (Light Mode - OKLch) */
+  --radius: 0.875rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.13 0.028 261.692);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.13 0.028 261.692);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.13 0.028 261.692);
+  --primary: oklch(0.586 0.253 17.585);
+  --primary-foreground: oklch(0.969 0.015 12.422);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.967 0.003 264.542);
+  --muted-foreground: oklch(0.551 0.027 264.364);
+  --accent: oklch(0.586 0.253 17.585);
+  --accent-foreground: oklch(0.969 0.015 12.422);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.928 0.006 264.531);
+  --input: oklch(0.928 0.006 264.531);
+  --ring: oklch(0.707 0.022 261.325);
+
+  /* Chart-Farben */
+  --chart-1: oklch(0.81 0.117 11.638);
+  --chart-2: oklch(0.645 0.246 16.439);
+  --chart-3: oklch(0.586 0.253 17.585);
+  --chart-4: oklch(0.514 0.222 16.935);
+  --chart-5: oklch(0.455 0.188 13.697);
+
+  /* Sidebar-Variablen */
+  --sidebar: oklch(0.985 0.002 247.839);
+  --sidebar-foreground: oklch(0.13 0.028 261.692);
+  --sidebar-primary: oklch(0.586 0.253 17.585);
+  --sidebar-primary-foreground: oklch(0.969 0.015 12.422);
+  --sidebar-accent: oklch(0.586 0.253 17.585);
+  --sidebar-accent-foreground: oklch(0.969 0.015 12.422);
+  --sidebar-border: oklch(0.928 0.006 264.531);
+  --sidebar-ring: oklch(0.707 0.022 261.325);
+
+  /* Theme-spezifische Erweiterungen */
+  --theme-spacing-xs: 0.25rem;
+  --theme-spacing-sm: 0.5rem;
+  --theme-spacing-md: 1rem;
+  --theme-spacing-lg: 1.5rem;
+  --theme-spacing-xl: 2rem;
+  --theme-spacing-2xl: 2.5rem;
+
+  /* Typografie */
+  --theme-font-family: 'JetBrains Mono Variable', monospace;
+  --theme-font-size-xs: 0.75rem;
+  --theme-font-size-sm: 0.875rem;
+  --theme-font-size-base: 1rem;
+  --theme-font-size-lg: 1.125rem;
+  --theme-font-size-xl: 1.25rem;
+  --theme-font-size-2xl: 1.5rem;
+  --theme-line-height-tight: 1.2;
+  --theme-line-height-normal: 1.5;
+  --theme-line-height-relaxed: 1.75;
+
+  /* Border-Radien */
+  --theme-radius-sm: calc(var(--radius) - 4px);
+  --theme-radius-md: calc(var(--radius) - 2px);
+  --theme-radius-lg: var(--radius);
+  --theme-radius-xl: calc(var(--radius) + 4px);
+  --theme-radius-2xl: calc(var(--radius) + 8px);
+  --theme-radius-3xl: calc(var(--radius) + 12px);
+  --theme-radius-4xl: calc(var(--radius) + 16px);
+
+  /* Schatten */
+  --theme-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --theme-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --theme-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  /* Animationen */
+  --theme-transition-fast: 100ms ease-in-out;
+  --theme-transition-normal: 200ms ease-in-out;
+  --theme-transition-slow: 300ms ease-in-out;
+}
+
+/**
+ * Theme-spezifische Komponenten-Overrides
+ * Diese Styles überschreiben die Standard-Komponenten-Styles wenn dieses Theme aktiv ist
+ */
+html[data-theme="shadcn-create-light"] [data-slot="input"],
+html[data-theme="shadcn-create-light"] input:not([type="checkbox"]):not([type="radio"]) {
+  border-radius: var(--theme-radius-4xl);
+  background-color: color-mix(in oklch, var(--input) 30%, transparent);
+}
+
+html[data-theme="shadcn-create-light"] [data-slot="select-trigger"],
+html[data-theme="shadcn-create-light"] select {
+  border-radius: var(--theme-radius-4xl);
+  background-color: color-mix(in oklch, var(--input) 30%, transparent);
+}
+
+html[data-theme="shadcn-create-light"] [data-slot="textarea"] {
+  border-radius: var(--theme-radius-2xl);
+  background-color: color-mix(in oklch, var(--input) 30%, transparent);
+}
+
+/* Button: Pill-shaped, no shadow */
+html[data-theme="shadcn-create-light"] [data-slot="button"] {
+  border-radius: var(--theme-radius-4xl);
+  box-shadow: none;
+}
+
+html[data-theme="shadcn-create-light"] [data-slot="button"][data-variant="outline"] {
+  background-color: color-mix(in oklch, var(--input) 30%, transparent);
+  border-color: var(--border);
+}
+
+/* Card: Larger radius, ring instead of border/shadow */
+html[data-theme="shadcn-create-light"] [data-slot="card"] {
+  border-radius: var(--theme-radius-2xl);
+  border: none;
+  box-shadow: none;
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  --tw-ring-color: color-mix(in oklch, var(--foreground) 10%, transparent);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+/* Badge: Pill-shaped */
+html[data-theme="shadcn-create-light"] [data-slot="badge"] {
+  border-radius: var(--theme-radius-4xl);
+}
+
+/* Select Content: Larger radius, ring */
+html[data-theme="shadcn-create-light"] [data-slot="select-content"] {
+  border-radius: var(--theme-radius-2xl);
+  border: none;
+  --tw-ring-color: color-mix(in oklch, var(--foreground) 5%, transparent);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), 0 0 0 1px var(--tw-ring-color), 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Select Item: Larger radius */
+html[data-theme="shadcn-create-light"] [data-slot="select-item"] {
+  border-radius: var(--theme-radius-xl);
+}
+
+/* Dropdown Menu Content */
+html[data-theme="shadcn-create-light"] [data-slot="dropdown-menu-content"] {
+  border-radius: var(--theme-radius-2xl);
+  border: none;
+  --tw-ring-color: color-mix(in oklch, var(--foreground) 5%, transparent);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), 0 0 0 1px var(--tw-ring-color), 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Dropdown Menu Item */
+html[data-theme="shadcn-create-light"] [data-slot="dropdown-menu-item"] {
+  border-radius: var(--theme-radius-xl);
+}
+
+/* Popover Content */
+html[data-theme="shadcn-create-light"] [data-slot="popover-content"] {
+  border-radius: var(--theme-radius-2xl);
+  border: none;
+  --tw-ring-color: color-mix(in oklch, var(--foreground) 5%, transparent);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), 0 0 0 1px var(--tw-ring-color), 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Dialog Content */
+html[data-theme="shadcn-create-light"] [data-slot="dialog-content"] {
+  border-radius: var(--theme-radius-2xl);
+}
+
+/* Alert Dialog Content */
+html[data-theme="shadcn-create-light"] [data-slot="alert-dialog-content"] {
+  border-radius: var(--theme-radius-2xl);
+}
+
+/* Sheet Content */
+html[data-theme="shadcn-create-light"] [data-slot="sheet-content"] {
+  border-radius: var(--theme-radius-2xl);
+}
+
+/* Tabs List: Pill-shaped */
+html[data-theme="shadcn-create-light"] [data-slot="tabs-list"] {
+  border-radius: var(--theme-radius-4xl);
+}
+
+html[data-theme="shadcn-create-light"] [data-slot="tabs-trigger"] {
+  border-radius: var(--theme-radius-4xl);
+}

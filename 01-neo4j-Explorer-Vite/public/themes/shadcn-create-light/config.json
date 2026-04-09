@@ -1,0 +1,28 @@
+{
+  "name": "shadcn/create Light",
+
+  "layout": {
+    "type": "scrolling",
+    "maxWidth": "1280px",
+    "headerMaxWidth": "1280px",
+    "contentPadding": "24px",
+    "contentPaddingMobile": "16px"
+  },
+
+  "navigation": {
+    "position": "vertical-left",
+    "width": "256px",
+    "collapsedWidth": "64px",
+    "collapsible": true,
+    "collapsedByDefault": false
+  },
+
+  "header": {
+    "height": "64px",
+    "sticky": true
+  },
+
+  "footer": {
+    "height": "0px"
+  }
+}

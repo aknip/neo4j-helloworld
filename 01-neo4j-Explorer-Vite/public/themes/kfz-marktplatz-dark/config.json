@@ -1,0 +1,27 @@
+{
+  "name": "KFZ Marktplatz Dark",
+  
+  "layout": {
+    "type": "fixed",
+    "maxWidth": "1200px",
+    "headerMaxWidth": "1200px",
+    "contentPadding": "32px",
+    "contentPaddingMobile": "16px"
+  },
+
+  "navigation": {
+    "position": "horizontal-top",
+    "width": "100%",
+    "collapsedWidth": "0px",
+    "collapsible": false
+  },
+
+  "header": {
+    "height": "80px",
+    "sticky": true
+  },
+
+  "footer": {
+    "height": "56px"
+  }
+}

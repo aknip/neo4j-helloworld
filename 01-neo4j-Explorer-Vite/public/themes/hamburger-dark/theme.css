@@ -1,0 +1,113 @@
+/**
+ * Hamburger Navigation Dark Theme
+ *
+ * Mobile-first Design mit Hamburger-Menü im Dark Mode.
+ * Kompaktes, app-artiges dunkles Design.
+ */
+
+:root {
+  /* ============================================
+   * shadcn/ui Farbvariablen (Dark Mode)
+   * ============================================ */
+
+  --radius: 0.75rem;
+
+  /* Backgrounds - Tiefes Schwarz */
+  --background: oklch(0.12 0.01 260);
+  --foreground: oklch(0.95 0.01 260);
+  --card: oklch(0.16 0.01 260);
+  --card-foreground: oklch(0.95 0.01 260);
+  --popover: oklch(0.16 0.01 260);
+  --popover-foreground: oklch(0.95 0.01 260);
+
+  /* Primary - Lebhaftes Grün */
+  --primary: oklch(0.65 0.18 150);
+  --primary-foreground: oklch(0.1 0.01 260);
+
+  /* Secondary - Dunkles Grau */
+  --secondary: oklch(0.2 0.01 260);
+  --secondary-foreground: oklch(0.9 0.01 260);
+
+  /* Muted */
+  --muted: oklch(0.18 0.01 260);
+  --muted-foreground: oklch(0.55 0.02 260);
+
+  /* Accent - Dunkles Grün */
+  --accent: oklch(0.25 0.05 150);
+  --accent-foreground: oklch(0.9 0.01 260);
+
+  /* Destructive */
+  --destructive: oklch(0.55 0.22 25);
+
+  /* Borders */
+  --border: oklch(0.25 0.01 260);
+  --input: oklch(0.25 0.01 260);
+  --ring: oklch(0.65 0.18 150);
+
+  /* Chart-Farben */
+  --chart-1: oklch(0.65 0.18 150);
+  --chart-2: oklch(0.65 0.15 200);
+  --chart-3: oklch(0.7 0.18 100);
+  --chart-4: oklch(0.75 0.15 50);
+  --chart-5: oklch(0.6 0.2 280);
+
+  /* Sidebar-Variablen (für Hamburger-Overlay) */
+  --sidebar: oklch(0.14 0.01 260);
+  --sidebar-foreground: oklch(0.95 0.01 260);
+  --sidebar-primary: oklch(0.65 0.18 150);
+  --sidebar-primary-foreground: oklch(0.1 0.01 260);
+  --sidebar-accent: oklch(0.25 0.05 150);
+  --sidebar-accent-foreground: oklch(0.9 0.01 260);
+  --sidebar-border: oklch(0.25 0.01 260);
+  --sidebar-ring: oklch(0.65 0.18 150);
+
+  /* ============================================
+   * Theme-spezifische Erweiterungen
+   * ============================================ */
+
+  /* Spacing Scale - Kompakt */
+  --theme-spacing-xs: 0.25rem;
+  --theme-spacing-sm: 0.5rem;
+  --theme-spacing-md: 1rem;
+  --theme-spacing-lg: 1.5rem;
+  --theme-spacing-xl: 2rem;
+  --theme-spacing-2xl: 2.5rem;
+
+  /* Typografie */
+  --theme-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --theme-font-size-xs: 0.75rem;
+  --theme-font-size-sm: 0.8125rem;
+  --theme-font-size-base: 0.9375rem;
+  --theme-font-size-lg: 1.0625rem;
+  --theme-font-size-xl: 1.1875rem;
+  --theme-font-size-2xl: 1.375rem;
+  --theme-line-height-tight: 1.2;
+  --theme-line-height-normal: 1.45;
+  --theme-line-height-relaxed: 1.6;
+
+  /* Border-Radien - Rund (App-Style) */
+  --theme-radius-sm: 8px;
+  --theme-radius-md: 12px;
+  --theme-radius-lg: 20px;
+
+  /* Schatten - Stärker im Dark Mode */
+  --theme-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  --theme-shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+  --theme-shadow-lg: 0 8px 24px -4px rgba(0, 0, 0, 0.6);
+
+  /* Animationen - Schnell */
+  --theme-transition-fast: 120ms ease-out;
+  --theme-transition-normal: 200ms ease-out;
+  --theme-transition-slow: 350ms ease-out;
+
+  /* Navigation */
+  --theme-nav-background: oklch(0.14 0.01 260);
+  --theme-nav-border-color: oklch(0.25 0.01 260);
+
+  /* Header - Kompakt */
+  --theme-header-background: oklch(0.14 0.01 260);
+  --theme-header-border-color: oklch(0.25 0.01 260);
+
+  /* Footer */
+  --theme-footer-background: oklch(0.1 0.01 260);
+}

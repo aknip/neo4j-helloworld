@@ -1,0 +1,314 @@
+/**
+ * A12 Design App Styles
+ * SRC MRC Platform Design System
+ */
+
+/* ============================================
+   A12 Design CSS Variables
+   ============================================ */
+
+[data-app="a12-design"] {
+  /* Primary Colors (from HTML designs) */
+  --a12-primary: #0056b3;
+  --a12-primary-dark: #004494;
+  --a12-primary-hover: #004494;
+  --a12-primary-light: #e6f0fa;
+
+  /* Secondary Colors */
+  --a12-secondary: #E6F0FF;
+  --a12-accent-orange: #f59e0b;
+
+  /* Background Colors */
+  --a12-background-light: #ffffff;
+  --a12-background-dark: #121212;
+  --a12-surface-light: #ffffff;
+  --a12-surface-dark: #1E1E1E;
+
+  /* Text Colors */
+  --a12-text-light: #333333;
+  --a12-text-dark: #E0E0E0;
+  --a12-muted-light: #6b7280;
+  --a12-muted-dark: #9ca3af;
+
+  /* Border Colors */
+  --a12-border-light: #e2e8f0;
+  --a12-border-dark: #404040;
+
+  /* Spacing Scale */
+  --a12-spacing-xs: 4px;
+  --a12-spacing-sm: 8px;
+  --a12-spacing-md: 16px;
+  --a12-spacing-lg: 24px;
+  --a12-spacing-xl: 32px;
+  --a12-spacing-2xl: 40px;
+
+  /* Font Sizes */
+  --a12-font-size-xs: 0.75rem;
+  --a12-font-size-sm: 0.875rem;
+  --a12-font-size-base: 1rem;
+  --a12-font-size-lg: 1.125rem;
+  --a12-font-size-xl: 1.25rem;
+  --a12-font-size-2xl: 1.5rem;
+  --a12-font-size-3xl: 1.875rem;
+
+  /* Border Radius */
+  --a12-border-radius-sm: 0.25rem;
+  --a12-border-radius-md: 0.375rem;
+  --a12-border-radius-lg: 0.5rem;
+
+  /* Transitions */
+  --a12-transition-fast: 150ms ease;
+  --a12-transition-normal: 200ms ease;
+  --a12-transition-slow: 300ms ease;
+
+  /* Shadows */
+  --a12-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --a12-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --a12-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+
+  /* Container */
+  --a12-container-max-width: 1600px;
+  --a12-content-padding: 1.5rem;
+  --a12-content-padding-mobile: 1rem;
+
+  /* Font Family */
+  --a12-font-family: 'Roboto', 'Inter', sans-serif;
+}
+
+/* ============================================
+   A12 Design Utility Classes
+   ============================================ */
+
+/* Spacing utilities */
+@utility a12-p-xs { padding: var(--a12-spacing-xs); }
+@utility a12-p-sm { padding: var(--a12-spacing-sm); }
+@utility a12-p-md { padding: var(--a12-spacing-md); }
+@utility a12-p-lg { padding: var(--a12-spacing-lg); }
+@utility a12-p-xl { padding: var(--a12-spacing-xl); }
+@utility a12-p-2xl { padding: var(--a12-spacing-2xl); }
+
+@utility a12-m-xs { margin: var(--a12-spacing-xs); }
+@utility a12-m-sm { margin: var(--a12-spacing-sm); }
+@utility a12-m-md { margin: var(--a12-spacing-md); }
+@utility a12-m-lg { margin: var(--a12-spacing-lg); }
+@utility a12-m-xl { margin: var(--a12-spacing-xl); }
+@utility a12-m-2xl { margin: var(--a12-spacing-2xl); }
+
+@utility a12-gap-xs { gap: var(--a12-spacing-xs); }
+@utility a12-gap-sm { gap: var(--a12-spacing-sm); }
+@utility a12-gap-md { gap: var(--a12-spacing-md); }
+@utility a12-gap-lg { gap: var(--a12-spacing-lg); }
+@utility a12-gap-xl { gap: var(--a12-spacing-xl); }
+@utility a12-gap-2xl { gap: var(--a12-spacing-2xl); }
+
+/* Font size utilities */
+@utility a12-text-xs { font-size: var(--a12-font-size-xs); }
+@utility a12-text-sm { font-size: var(--a12-font-size-sm); }
+@utility a12-text-base { font-size: var(--a12-font-size-base); }
+@utility a12-text-lg { font-size: var(--a12-font-size-lg); }
+@utility a12-text-xl { font-size: var(--a12-font-size-xl); }
+@utility a12-text-2xl { font-size: var(--a12-font-size-2xl); }
+@utility a12-text-3xl { font-size: var(--a12-font-size-3xl); }
+
+/* Border radius utilities */
+@utility a12-rounded-sm { border-radius: var(--a12-border-radius-sm); }
+@utility a12-rounded-md { border-radius: var(--a12-border-radius-md); }
+@utility a12-rounded-lg { border-radius: var(--a12-border-radius-lg); }
+
+/* Shadow utilities */
+@utility a12-shadow-sm { box-shadow: var(--a12-shadow-sm); }
+@utility a12-shadow-md { box-shadow: var(--a12-shadow-md); }
+@utility a12-shadow-lg { box-shadow: var(--a12-shadow-lg); }
+
+/* ============================================
+   A12 Design Custom Styles
+   ============================================ */
+
+/* Hide scrollbar utility */
+[data-app="a12-design"] .scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+[data-app="a12-design"] .scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Toggle Switch Styles (from coverage design) */
+[data-app="a12-design"] .toggle-checkbox:checked {
+  right: 0;
+  border-color: var(--a12-primary);
+}
+
+[data-app="a12-design"] .toggle-checkbox:checked + .toggle-label {
+  background-color: var(--a12-primary);
+}
+
+/* Material Icons Support */
+[data-app="a12-design"] .material-icons,
+[data-app="a12-design"] .material-icons-outlined {
+  font-family: 'Material Icons', 'Material Icons Outlined';
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga';
+}
+
+/* Header Styles */
+[data-app="a12-design"] .a12-header {
+  background-color: white;
+  border-bottom: 1px solid var(--a12-border-light);
+  padding: 0.75rem 1.5rem;
+}
+
+[data-app="a12-design"].dark .a12-header {
+  background-color: var(--a12-surface-dark);
+  border-bottom-color: var(--a12-border-dark);
+}
+
+/* Navigation Styles */
+[data-app="a12-design"] .a12-nav {
+  background-color: var(--a12-primary);
+  color: white;
+}
+
+[data-app="a12-design"] .a12-nav-item {
+  padding: 0.75rem 1rem;
+  font-size: var(--a12-font-size-sm);
+  font-weight: 500;
+  transition: background-color var(--a12-transition-fast);
+}
+
+[data-app="a12-design"] .a12-nav-item:hover {
+  background-color: var(--a12-primary-hover);
+}
+
+[data-app="a12-design"] .a12-nav-item.active {
+  background-color: var(--a12-primary-dark);
+  border-bottom: 4px solid white;
+}
+
+/* Tab Navigation Styles */
+[data-app="a12-design"] .a12-tabs {
+  background-color: var(--a12-primary-light);
+  border-bottom: 1px solid var(--a12-border-light);
+}
+
+[data-app="a12-design"].dark .a12-tabs {
+  background-color: rgb(31 41 55);
+  border-bottom-color: var(--a12-border-dark);
+}
+
+[data-app="a12-design"] .a12-tab-item {
+  padding: 0.75rem 0.25rem;
+  border-bottom: 2px solid transparent;
+  font-size: var(--a12-font-size-sm);
+  font-weight: 500;
+  transition: all var(--a12-transition-fast);
+}
+
+[data-app="a12-design"] .a12-tab-item.active {
+  color: var(--a12-primary);
+  border-bottom-color: var(--a12-primary);
+  font-weight: 700;
+}
+
+/* Table Styles */
+[data-app="a12-design"] .a12-table {
+  width: 100%;
+  text-align: left;
+  border-collapse: collapse;
+}
+
+[data-app="a12-design"] .a12-table thead {
+  border-bottom: 2px solid var(--a12-primary);
+}
+
+[data-app="a12-design"] .a12-table th {
+  padding: 0.75rem 1.5rem;
+  font-size: var(--a12-font-size-xs);
+  font-weight: 700;
+  color: var(--a12-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+[data-app="a12-design"] .a12-table tbody tr {
+  border-bottom: 1px solid var(--a12-border-light);
+  transition: background-color var(--a12-transition-fast);
+}
+
+[data-app="a12-design"].dark .a12-table tbody tr {
+  border-bottom-color: var(--a12-border-dark);
+}
+
+[data-app="a12-design"] .a12-table tbody tr:hover {
+  background-color: rgb(249 250 251);
+}
+
+[data-app="a12-design"].dark .a12-table tbody tr:hover {
+  background-color: rgb(31 41 55);
+}
+
+[data-app="a12-design"] .a12-table td {
+  padding: 1rem 1.5rem;
+  font-size: var(--a12-font-size-sm);
+}
+
+/* Button Styles */
+[data-app="a12-design"] .a12-btn-primary {
+  background-color: var(--a12-primary);
+  color: white;
+  font-weight: 700;
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--a12-border-radius-sm);
+  text-transform: uppercase;
+  font-size: var(--a12-font-size-xs);
+  transition: background-color var(--a12-transition-fast);
+}
+
+[data-app="a12-design"] .a12-btn-primary:hover {
+  background-color: var(--a12-primary-hover);
+}
+
+[data-app="a12-design"] .a12-btn-secondary {
+  background-color: var(--a12-primary-light);
+  color: var(--a12-primary);
+  font-weight: 700;
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--a12-border-radius-sm);
+  text-transform: uppercase;
+  font-size: var(--a12-font-size-xs);
+  transition: background-color var(--a12-transition-fast);
+}
+
+[data-app="a12-design"] .a12-btn-secondary:hover {
+  background-color: rgb(219 234 254);
+}
+
+/* Footer Styles */
+[data-app="a12-design"] .a12-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-top: 1px solid var(--a12-border-light);
+  padding: 1rem 1.5rem;
+  box-shadow: var(--a12-shadow-lg);
+  z-index: 50;
+}
+
+[data-app="a12-design"].dark .a12-footer {
+  background-color: var(--a12-surface-dark);
+  border-top-color: var(--a12-border-dark);
+}

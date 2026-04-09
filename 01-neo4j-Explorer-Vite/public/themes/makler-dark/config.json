@@ -1,0 +1,26 @@
+{
+  "name": "Makler Dark",
+
+  "layout": {
+    "type": "scrolling",
+    "maxWidth": "1400px",
+    "contentPadding": "24px",
+    "contentPaddingMobile": "16px"
+  },
+
+  "navigation": {
+    "position": "horizontal-top",
+    "width": "100%",
+    "collapsedWidth": "0px",
+    "collapsible": false
+  },
+
+  "header": {
+    "height": "64px",
+    "sticky": true
+  },
+
+  "footer": {
+    "height": "48px"
+  }
+}

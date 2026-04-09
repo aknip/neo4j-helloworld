@@ -1,0 +1,26 @@
+{
+  "name": "Hamburger Navigation Dark",
+
+  "layout": {
+    "type": "scrolling",
+    "maxWidth": "100%",
+    "contentPadding": "20px",
+    "contentPaddingMobile": "16px"
+  },
+
+  "navigation": {
+    "position": "hamburger",
+    "width": "280px",
+    "collapsedWidth": "0px",
+    "collapsible": true
+  },
+
+  "header": {
+    "height": "56px",
+    "sticky": true
+  },
+
+  "footer": {
+    "height": "48px"
+  }
+}

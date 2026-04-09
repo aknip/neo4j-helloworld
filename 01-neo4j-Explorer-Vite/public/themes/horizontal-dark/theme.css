@@ -1,0 +1,113 @@
+/**
+ * Horizontal Navigation Dark Theme
+ *
+ * Theme mit horizontaler Navigation in dunklem Design.
+ * Modernes, elegantes Dark Mode Design.
+ */
+
+:root {
+  /* ============================================
+   * shadcn/ui Farbvariablen (Dark Mode)
+   * ============================================ */
+
+  --radius: 0.5rem;
+
+  /* Backgrounds - Tiefes Dunkelgrau */
+  --background: oklch(0.14 0.01 260);
+  --foreground: oklch(0.95 0.01 260);
+  --card: oklch(0.18 0.01 260);
+  --card-foreground: oklch(0.95 0.01 260);
+  --popover: oklch(0.18 0.01 260);
+  --popover-foreground: oklch(0.95 0.01 260);
+
+  /* Primary - Lebhaftes Blau */
+  --primary: oklch(0.65 0.2 250);
+  --primary-foreground: oklch(0.1 0.01 260);
+
+  /* Secondary - Dunkles Grau */
+  --secondary: oklch(0.22 0.01 260);
+  --secondary-foreground: oklch(0.9 0.01 260);
+
+  /* Muted - Gedämpftes Grau */
+  --muted: oklch(0.2 0.01 260);
+  --muted-foreground: oklch(0.6 0.02 260);
+
+  /* Accent - Dunkles Blau */
+  --accent: oklch(0.25 0.03 250);
+  --accent-foreground: oklch(0.9 0.01 260);
+
+  /* Destructive */
+  --destructive: oklch(0.55 0.22 25);
+
+  /* Borders */
+  --border: oklch(0.28 0.01 260);
+  --input: oklch(0.28 0.01 260);
+  --ring: oklch(0.65 0.2 250);
+
+  /* Chart-Farben - Leuchtende Palette */
+  --chart-1: oklch(0.65 0.2 250);
+  --chart-2: oklch(0.65 0.15 180);
+  --chart-3: oklch(0.7 0.18 140);
+  --chart-4: oklch(0.75 0.15 80);
+  --chart-5: oklch(0.65 0.2 320);
+
+  /* Sidebar-Variablen (nicht verwendet bei horizontal) */
+  --sidebar: var(--background);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* ============================================
+   * Theme-spezifische Erweiterungen
+   * ============================================ */
+
+  /* Spacing Scale - Großzügig */
+  --theme-spacing-xs: 0.5rem;
+  --theme-spacing-sm: 1rem;
+  --theme-spacing-md: 1.5rem;
+  --theme-spacing-lg: 2.5rem;
+  --theme-spacing-xl: 3rem;
+  --theme-spacing-2xl: 4rem;
+
+  /* Typografie */
+  --theme-font-family: 'Inter', system-ui, sans-serif;
+  --theme-font-size-xs: 0.75rem;
+  --theme-font-size-sm: 0.875rem;
+  --theme-font-size-base: 1rem;
+  --theme-font-size-lg: 1.125rem;
+  --theme-font-size-xl: 1.25rem;
+  --theme-font-size-2xl: 1.5rem;
+  --theme-line-height-tight: 1.25;
+  --theme-line-height-normal: 1.5;
+  --theme-line-height-relaxed: 1.75;
+
+  /* Border-Radien - Weich */
+  --theme-radius-sm: 6px;
+  --theme-radius-md: 10px;
+  --theme-radius-lg: 16px;
+
+  /* Schatten - Stärker im Dark Mode */
+  --theme-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  --theme-shadow-md: 0 4px 8px -1px rgba(0, 0, 0, 0.4);
+  --theme-shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.5);
+
+  /* Animationen */
+  --theme-transition-fast: 150ms ease-out;
+  --theme-transition-normal: 250ms ease-out;
+  --theme-transition-slow: 400ms ease-out;
+
+  /* Navigation - Horizontal Header */
+  --theme-nav-background: oklch(0.16 0.01 260);
+  --theme-nav-border-color: oklch(0.28 0.01 260);
+
+  /* Header */
+  --theme-header-background: oklch(0.16 0.01 260);
+  --theme-header-border-color: oklch(0.28 0.01 260);
+
+  /* Footer */
+  --theme-footer-background: oklch(0.12 0.01 260);
+}

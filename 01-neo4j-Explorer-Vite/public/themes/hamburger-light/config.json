@@ -1,0 +1,27 @@
+{
+  "name": "Hamburger Navigation Light",
+
+  "layout": {
+    "type": "scrolling",
+    "maxWidth": "800px",
+    "headerMaxWidth": "800px",
+    "contentPadding": "20px",
+    "contentPaddingMobile": "16px"
+  },
+
+  "navigation": {
+    "position": "hamburger",
+    "width": "280px",
+    "collapsedWidth": "0px",
+    "collapsible": true
+  },
+
+  "header": {
+    "height": "56px",
+    "sticky": true
+  },
+
+  "footer": {
+    "height": "48px"
+  }
+}
