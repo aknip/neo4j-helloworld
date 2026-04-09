@@ -1,9 +1,9 @@
 import neo4j, { type Driver } from 'neo4j-driver'
 
-const URI = 'neo4j://127.0.0.1:7687'
-const USER = 'neo4j'
-const PASSWORD = 'neo4jneo4j'
-const DB = 'neo4j'
+const URI = process.env.NEO4J_URI ?? 'neo4j://127.0.0.1:7687'
+const USER = process.env.NEO4J_USER ?? 'neo4j'
+const PASSWORD = process.env.NEO4J_PASSWORD ?? 'neo4jneo4j'
+const DB = process.env.NEO4J_DB ?? 'neo4j'
 
 let driver: Driver | null = null
 

@@ -34,12 +34,25 @@ scripts/create-app/       # CLI for generating themed apps
 ## Commands
 
 ```bash
-npm run dev              # Start dev server
+npm run dev              # Start frontend + backend (Neo4j must be running)
+npm run dev:full         # Start Neo4j (Docker) + frontend + backend
+npm run db:start         # Start Neo4j container only
+npm run db:stop          # Stop Neo4j container
+npm run db:reset         # Reset Neo4j (delete all data, restart)
 npm run build            # Build for production
 
 # Generate new themed app
 cd scripts/create-app && npm start -- --name my-app --preset "https://ui.shadcn.com/init?..."
 ```
+
+## Neo4j Database
+
+Neo4j runs via Docker Compose (`docker-compose.yml`). Credentials: `neo4j/neo4jneo4j`.
+
+- Browser UI: http://localhost:7474
+- Bolt: `neo4j://127.0.0.1:7687`
+- Cypher-Dateien: `Ontology_UWWB/cypher/` (gemountet als `/import` im Container)
+- Backend-Konfiguration via Env-Variablen: `NEO4J_URI`, `NEO4J_USER`, `NEO4J_PASSWORD`, `NEO4J_DB`
 
 ## Key Conventions
 
