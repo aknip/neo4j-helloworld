@@ -163,3 +163,9 @@ Der Protoyp soll generisch sein, sich aus Neo4J selbst konfigurieren (es soll ke
 Schritt 1: Einlesen der Cypher-Spezifikationen aus dem Projektverzeichnis, um den aktuellen Stand der Spezifikation in Neo4J zu importieren bzw. abzubilden
 Schritt 2: Vollautomatische Visualisierung der Daten und ihrer Beziehungen und generische Oberfläche / Tools zum Einsehen von Details, Bearbeiten, Neuanlegen und Löschen von Daten (CRUD)
 Erstelle hierzu einen Plan "_NOTES/iterative_plan.md"
+
+==========================================================================================
+
+Ziel App: 01-neo4j-Explorer-Vite, dort die App "Main App"
+Analysiere die Python app "00-neo4j-Explorer-Python" und baue sie in Vite um: Lege dort in der Sidebar einen neuen Punkt "Neo4j Explorer" an und baue dort die App ein. 
+Erstelle einen Implementierungsplan "_NOTES/01-neo4j-Explorer-Vite_plan.md"

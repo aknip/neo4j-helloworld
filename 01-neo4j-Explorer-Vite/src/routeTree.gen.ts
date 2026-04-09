@@ -28,6 +28,7 @@ import { Route as ReferenceAppauthSignIn2RouteImport } from './routes/reference-
 import { Route as ReferenceAppauthSignInRouteImport } from './routes/reference-app/(auth)/sign-in'
 import { Route as ReferenceAppauthOtpRouteImport } from './routes/reference-app/(auth)/otp'
 import { Route as ReferenceAppauthForgotPasswordRouteImport } from './routes/reference-app/(auth)/forgot-password'
+import { Route as MainAuthenticatedNeo4jExplorerRouteImport } from './routes/main/_authenticated/neo4j-explorer'
 import { Route as MainAuthenticatedDashboardRouteImport } from './routes/main/_authenticated/dashboard'
 import { Route as Mainerrors503RouteImport } from './routes/main/(errors)/503'
 import { Route as Mainerrors500RouteImport } from './routes/main/(errors)/500'
@@ -158,6 +159,12 @@ const ReferenceAppauthForgotPasswordRoute =
     id: '/(auth)/forgot-password',
     path: '/forgot-password',
     getParentRoute: () => ReferenceAppRouteRoute,
+  } as any)
+const MainAuthenticatedNeo4jExplorerRoute =
+  MainAuthenticatedNeo4jExplorerRouteImport.update({
+    id: '/neo4j-explorer',
+    path: '/neo4j-explorer',
+    getParentRoute: () => MainAuthenticatedRouteRoute,
   } as any)
 const MainAuthenticatedDashboardRoute =
   MainAuthenticatedDashboardRouteImport.update({
@@ -359,6 +366,7 @@ export interface FileRoutesByFullPath {
   '/main/500': typeof Mainerrors500Route
   '/main/503': typeof Mainerrors503Route
   '/main/dashboard': typeof MainAuthenticatedDashboardRoute
+  '/main/neo4j-explorer': typeof MainAuthenticatedNeo4jExplorerRoute
   '/reference-app/forgot-password': typeof ReferenceAppauthForgotPasswordRoute
   '/reference-app/otp': typeof ReferenceAppauthOtpRoute
   '/reference-app/sign-in': typeof ReferenceAppauthSignInRoute
@@ -408,6 +416,7 @@ export interface FileRoutesByTo {
   '/main/500': typeof Mainerrors500Route
   '/main/503': typeof Mainerrors503Route
   '/main/dashboard': typeof MainAuthenticatedDashboardRoute
+  '/main/neo4j-explorer': typeof MainAuthenticatedNeo4jExplorerRoute
   '/reference-app/forgot-password': typeof ReferenceAppauthForgotPasswordRoute
   '/reference-app/otp': typeof ReferenceAppauthOtpRoute
   '/reference-app/sign-in': typeof ReferenceAppauthSignInRoute
@@ -460,6 +469,7 @@ export interface FileRoutesById {
   '/main/(errors)/500': typeof Mainerrors500Route
   '/main/(errors)/503': typeof Mainerrors503Route
   '/main/_authenticated/dashboard': typeof MainAuthenticatedDashboardRoute
+  '/main/_authenticated/neo4j-explorer': typeof MainAuthenticatedNeo4jExplorerRoute
   '/reference-app/(auth)/forgot-password': typeof ReferenceAppauthForgotPasswordRoute
   '/reference-app/(auth)/otp': typeof ReferenceAppauthOtpRoute
   '/reference-app/(auth)/sign-in': typeof ReferenceAppauthSignInRoute
@@ -513,6 +523,7 @@ export interface FileRouteTypes {
     | '/main/500'
     | '/main/503'
     | '/main/dashboard'
+    | '/main/neo4j-explorer'
     | '/reference-app/forgot-password'
     | '/reference-app/otp'
     | '/reference-app/sign-in'
@@ -562,6 +573,7 @@ export interface FileRouteTypes {
     | '/main/500'
     | '/main/503'
     | '/main/dashboard'
+    | '/main/neo4j-explorer'
     | '/reference-app/forgot-password'
     | '/reference-app/otp'
     | '/reference-app/sign-in'
@@ -613,6 +625,7 @@ export interface FileRouteTypes {
     | '/main/(errors)/500'
     | '/main/(errors)/503'
     | '/main/_authenticated/dashboard'
+    | '/main/_authenticated/neo4j-explorer'
     | '/reference-app/(auth)/forgot-password'
     | '/reference-app/(auth)/otp'
     | '/reference-app/(auth)/sign-in'
@@ -788,6 +801,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/reference-app/forgot-password'
       preLoaderRoute: typeof ReferenceAppauthForgotPasswordRouteImport
       parentRoute: typeof ReferenceAppRouteRoute
+    }
+    '/main/_authenticated/neo4j-explorer': {
+      id: '/main/_authenticated/neo4j-explorer'
+      path: '/neo4j-explorer'
+      fullPath: '/main/neo4j-explorer'
+      preLoaderRoute: typeof MainAuthenticatedNeo4jExplorerRouteImport
+      parentRoute: typeof MainAuthenticatedRouteRoute
     }
     '/main/_authenticated/dashboard': {
       id: '/main/_authenticated/dashboard'
@@ -1045,6 +1065,7 @@ const MainAuthenticatedSettingsRouteRouteWithChildren =
 interface MainAuthenticatedRouteRouteChildren {
   MainAuthenticatedSettingsRouteRoute: typeof MainAuthenticatedSettingsRouteRouteWithChildren
   MainAuthenticatedDashboardRoute: typeof MainAuthenticatedDashboardRoute
+  MainAuthenticatedNeo4jExplorerRoute: typeof MainAuthenticatedNeo4jExplorerRoute
   MainAuthenticatedIndexRoute: typeof MainAuthenticatedIndexRoute
   MainAuthenticatedErrorsErrorRoute: typeof MainAuthenticatedErrorsErrorRoute
   MainAuthenticatedHelpCenterIndexRoute: typeof MainAuthenticatedHelpCenterIndexRoute
@@ -1055,6 +1076,7 @@ const MainAuthenticatedRouteRouteChildren: MainAuthenticatedRouteRouteChildren =
     MainAuthenticatedSettingsRouteRoute:
       MainAuthenticatedSettingsRouteRouteWithChildren,
     MainAuthenticatedDashboardRoute: MainAuthenticatedDashboardRoute,
+    MainAuthenticatedNeo4jExplorerRoute: MainAuthenticatedNeo4jExplorerRoute,
     MainAuthenticatedIndexRoute: MainAuthenticatedIndexRoute,
     MainAuthenticatedErrorsErrorRoute: MainAuthenticatedErrorsErrorRoute,
     MainAuthenticatedHelpCenterIndexRoute:

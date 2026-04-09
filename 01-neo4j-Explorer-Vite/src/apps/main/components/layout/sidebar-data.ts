@@ -1,5 +1,6 @@
 import {
   LayoutDashboard,
+  Database,
   Bug,
   FileX,
   HelpCircle,
@@ -32,6 +33,11 @@ export const sidebarData: SidebarData = {
           title: 'Dashboard',
           url: '/main/dashboard',
           icon: LayoutDashboard,
+        },
+        {
+          title: 'Neo4j Explorer',
+          url: '/main/neo4j-explorer',
+          icon: Database,
         },
       ],
     },
