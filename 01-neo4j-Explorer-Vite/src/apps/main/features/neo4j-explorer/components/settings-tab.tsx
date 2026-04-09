@@ -161,7 +161,7 @@ export function SettingsTab() {
           {reiniting ? 'Lade...' : 'Schema neu laden'}
         </Button>
         <Button variant='outline' onClick={handleTranslate} disabled={translating}>
-          {translating ? 'Übersetze...' : 'Übersetzungen anlegen'}
+          {translating ? 'Übersetze...' : 'Übersetzungen anlegen (LLM)'}
         </Button>
         {isDirty && (
           <span className='text-muted-foreground text-sm'>
