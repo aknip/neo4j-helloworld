@@ -42,8 +42,11 @@ Bei Bedarf lesen:
 - `reference/source-inspection.md` – DB-Schema und Fachtexte effizient einlesen
 - `reference/design-decisions.md` – die **6 bewährten Kernfragen**
 - `reference/naming-policy.md` – Regeln für Übernahme und Umbenennung
+- `reference/neo4j-modeling-patterns.md` – Node-vs-Property, Relationship-vs-Intermediate, Anti-Patterns (generische Modellierungsprinzipien)
 - `reference/cypher-pitfalls.md` – Parser-Fallen, MERGE-Idempotenz, Performance
+- `reference/cypher-templates.md` – wiederverwendbare Cypher-Snippets (Constraints, MERGE, Query-Patterns)
 - `reference/test-data-patterns.md` – bewusste Spezialfälle
+- `reference/review-checklist.md` – Gesamtreview-Checkliste (Phase 2, Option 5)
 - `reference/explorer-integration.md` – Main-App für Import, Zwischen-Imports, Visualisierung
 
 Templates:
@@ -62,7 +65,7 @@ Bei Skill-Start prüfen:
 | Pfad auf Postgres-Dump / SQL-File | Schema via Grep nach `CREATE TABLE` analysieren |
 | Verzeichnispfad | Markdown/Text-Dateien als Fachbeschreibung einlesen |
 | Domänenname (z.B. "E-Commerce") | als Domäne übernehmen, erste Frage: "Gibt es eine DB/Dokumente?" |
-| Kein Argument | nach Domäne UND Quelle fragen |
+| Kein Argument | nach Domäne UND Quelle fragen. Wenn der User *keine Quelle* hat (reines Greenfield-Design), läuft der Skill wie ein klassischer Ontologie-Guide: die Quelleninspektion (Schritt 1) entfällt, und statt der 6 Designfragen stellst du zunächst generische Kern-Fragen (Was sind die 3-5 wichtigsten Entitäten? Welche Analyse-Fragen soll der Graph beantworten?). Die 6 Designfragen werden dann kontextabhängig eingesetzt, sobald Struktur-Indikatoren erkennbar sind. Fallbacks: `reference/neo4j-modeling-patterns.md` für generische Node-vs-Property-Entscheidungen. |
 
 **Zusätzlich** den aktuellen User-Nachrichten-Kontext inspizieren – oft liegt der fachliche Beschreibungstext direkt in der Nachricht oder einer markierten Dateistelle (Primärquelle).
 
@@ -175,7 +178,7 @@ Was willst du vertiefen?
   2. Beziehung prüfen (Richtung, Kardinalität, Properties, Zwischenknoten?)
   3. Bereich erweitern (neue Entitäten/Beziehungen)
   4. Query-Validierung (Analytics Use Cases → Cypher)
-  5. Gesamt-Review (Anti-Pattern-Check, Naming, Redundanz)
+  5. Gesamt-Review (Anti-Pattern-Check, Naming, Redundanz) – siehe `reference/review-checklist.md`
   6. Testdaten erweitern (Volumen, neue Szenarien)
   7. Abschließen / Finalisieren
 ```

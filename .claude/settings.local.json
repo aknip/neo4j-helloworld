@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp /Users/aknipschild/github/neo4j-helloworld/.claude/skills/ontology-guide/reference/neo4j-modeling-patterns.md /Users/aknipschild/github/neo4j-helloworld/.claude/skills/ontology-creator/reference/)",
+      "Bash(cp /Users/aknipschild/github/neo4j-helloworld/.claude/skills/ontology-guide/reference/review-checklist.md /Users/aknipschild/github/neo4j-helloworld/.claude/skills/ontology-creator/reference/)",
+      "Bash(cp /Users/aknipschild/github/neo4j-helloworld/.claude/skills/ontology-guide/reference/cypher-templates.md /Users/aknipschild/github/neo4j-helloworld/.claude/skills/ontology-creator/reference/)"
+    ]
+  }
+}

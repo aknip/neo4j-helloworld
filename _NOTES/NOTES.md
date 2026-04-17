@@ -279,3 +279,27 @@ Zusammenfassend: Ich möchte gerne in einem interaktiven Prozess die vorhandene 
 
 
 erstelle aus dem chat verlauf einen generischen skill "ontology-creator", der mir beim entwurf von ontologie / Graphen hilft: Nimmt bisherigen Input entgegen (z. B. vorhandene DB, fachliche Konzepte) und entwickelt dann - wie in diesem chat - schritt für schritt ontologie und graph in einem interaktiven prozess (mit nutzung der app /Neo4j Explorer)
+
+
+sind diese aspekte im Skill berücksichtigt:
+Deine Aufgabe: Setze die vorhandene DB schrittweise in eine Ontologie und einen Graphen um, aber optimiere sie vor dem gegebenen fachlichen Hintegrund. namen von entitäten und feldern sollen so weit wie möglich übernommen werden - können aber korrigiert werden, wenn sie irreführend sind.
+
+Ich möchte die entwicklung der Ontologie und des Graphen so konkret und nachvollziehbar wie möglich für mich machen. Die abstrakte Beschreibung der Entitäten und Beziehungen reicht mir da nicht aus, ich verliere den Überblick.
+
+Mache die Migration schrittweise, in einer fachlich sinnvollen Reihenfolge und stelle Verständnisfragen / Rückfragen, damit die Struktur optimiert werden kann. befülle ggf. auch zwischendurch die db mit testdaten, um das verständnis zu erleichtern. ich kann mir dann die daten in der main app im Neo4j Explorer anschauen.
+
+Speichere Onotololgie und Graph nach jedem Zwischenschritt als Markdown-Dateien im Verzeichnis "Ontology_UWWB", erstelle bei Bedarf Cypher Scripts im Unterverziechnis "cypher", so dass diese vom Import-Mechanismus im der main app (Neo4j Explorer) importiert werden können. Ich möchte die Arbeit jederzeit unterbrechen können und dann mithilfe der bisher entsandenen Dokumentation bzw. dem Zwischenstand der Datenbank weiterarbeiten können.
+
+Zusammenfassend: Ich möchte gerne in einem interaktiven Prozess die vorhandene db nach Neo4J migrieren.
+
+
+macht es sinn, die beiden ontology-skills zu vereinen? oder sind die unterschied zu groß bzw. verfolgen sie dieselben ziele?
+
+
+
+
+Hier ist eine App, in der ein "Neo4j Explorer" implementiert ist (die Neo4j DB läuft per Docker)
+https://github.com/aknip/neo4j-helloworld/tree/main/01-neo4j-Explorer-Vite
+Aufgabe:
+Kopiere den "Neo4j Explorer" inkl. aller funktionalitäten in die main app (neuer Menüpunkt in der Sidebar "Neo4j Explorer")
+
