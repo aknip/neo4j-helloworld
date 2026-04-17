@@ -228,3 +228,54 @@ Stelle Rückfragen zu diesen Anforderungen, wenn nötig.
 Verlinkung des LLM Outputs:
 Das LLM soll im Output "Link-Codes" zu verlinkten Nodes ausgeben. Diese Link-Codes sollen als Links im Output angezeigt werden. Die Links sollen auf die jeweilige Node-URL verweisen (z.B. http://localhost:5173/neo4j-explorer/explorer/1234567890).
 
+
+
+
+
+==========================================================================================
+
+
+
+Hier ist eine DB "_NOTES/data/app.db"
+
+Der fachliche Hintergrund ist folgender: auf der einen Seite sind Unternehmen und die zu versichernden Risiken. Auf der anderen Seite sind Versicherer und Versicherungsverträge (Policen), die die Risiken abdecken, hier zugreifen Versicherer auf ein oder mehrere Versicherungsprodukte zurück, die über definierte Deckungen teile der Risiken abdecken. Ziel des Datenmodells ist es, das Zusammenspiel dieser beiden Ebenen in Klammern Unternehmen und Versicherung und die Bezüge abzubilden.
+Folgende Beziehungen sind wichtig:
+Ein Unternehmen kann aus mehreren Unternehmen bestehen in Klammern Tochterunternehmen.
+Ein Unternehmen hat Objekte, die es zu versichern gilt. Objekte sind zum Beispiel Maschinen, Fahrzeuge, Gebäude, aber auch Mitarbeiter, Veranstaltungen, Dienstleistungen und so weiter.
+Einem Objekt kann ein oder mehrere Risiken zugeordnet werden, zum Beispiel Diebstahl, Feuer, Beschädigung, Entwertung, Produktionsausfall und so weiter.
+Einem Risiko können ein oder mehrere Deckungen zugeordnet werden, die den Versicherungsschutz definieren, zum Beispiel die maximale Schadensumme in Klammern Versicherungssumme oder die definierten Umstände, in denen der Versicherungsschutz greift (Klauseln).
+Mehrere Deckungen inklusive ihrer Klauseln werden von Versicherungen in Versicherungsprodukte gebündelt, die sie am Markt anbieten.
+Versicherungsprodukte werden in Sparten kopiert beziehungsweise organisiert.
+Der Verkauf und Vertrieb von Versicherungsprodukte geschieht in der Regel über Makler. Diese nehmen die Daten zum Versicherten Unternehmen, den zu versicherten Objekten, ihren Risiken und Deckungwünschen entgegen, und starten eine Ausschreibung an einen oder mehrere Versicherer. Diese bieten in Ihrem Angeboten Lösungen zum Deckungsschutz. Dabei wird jeder angefragten Deckung ein Deckungangebot des Versicherers zugeordnet, wobei auch Bezug auf gewünschte Versicherungsbedingungen Bedingungen in Klammern Klauseln genommen wird. Es ist dann zum Beispiel möglich, dass das Angebot des Versicherers von den Wünschen des Unternehmens abweicht, zum Beispiel durch eine niedrigere angebotene Versicherungssumme oder eine bestimmte Klausel, die zum Beispiel bestimmte Schadensarten ausschließt.
+Schäden spielen ebenfalls eine wichtige Rolle. Ein Schaden ist immer einem Objekt zugeordnet, kann aber auch mehrere Deckungen / Verträge betreffen. Es wird an einzelnen Deckungen entschieden, ob und wieviel des entschadenen Schadens bezahlt wird (abhängig von Schadenhöhe, Umständen und Klauseln). Die Schadensregulierung kann gerade bei Großschäden in mehreren Iterationen erfolgen (TEilregulierungen, Teilzahlungen etc.)
+Das Datenmodell soll all diese Entitäten, Eigenschaften und Prozesse miteinander in Bezug setzen und referenzieren. 
+Hierbei soll zwischen festen Basis Attributen und flexiblen Zusatz Attributen unterschieden werden: Basis Attribute sind eindeutige Nummer, Bezeichnung, Eigenschaften der Entität und so weiter. Flexible Zusatz Attribute sind zum Beispiel Objekt oder auch Deckung oder Versicherungsprodukte. Spezifische Detaileigenschaften. Beispiel: die Deckungen für ein Haftpflichtversicherung benötigen andere Informationen als die Deckungeigenschaften für eine Cyberversicherung. Hierzu sollen Templates beziehungsweise Vorlagen bereitgestellt werden, damit diese flexiblen Zusatz Attribute einheitlich verwendet werden. Gleiches gilt für Objekte: ein Fahrzeug hat andere Eigenschaften als eine Produktionshalle. Es kann sogar sein, dass in einem einzelnen Geschäftsvorfall (Objektbeschreibung, Risiko Beschreibung, Versicherungsvertrag) individuelle Zusatz Attribute benötigt werden.
+Ein wichitger Aspekt ist, dass Versicherungsverträge und ihre Deckungen regelmässig angepasst werden müssen, weil sich die Rahmenbedingungen des Unternehmens ändern (Zukauf neues Tochterunternehmens, neue oder abgehende Maschinen, Änderungen an anderen Objekten oder der Mitarbetierstruktur etc.) Auch der Schadenverlauf (wieviele Schäden gab es an welchem Vertrag / welcher Deckung / welchem OBjekt?) Wie ist die sogennante Schadenquote auf den verschiedenen Ebenen (Deckung, Objekt, Unternehmen etc.)?
+Damit sind zum Beispiel folgende Fragestellungen, Bar7:
+Welche Objekte hat ein Unternehmen?
+Welche Risiken hat ein oder mehrere Objekte?
+Welche Deckungen beziehungsweise Verträge sind den Risiken beziehungsweise Objekten zugeordnet?
+Wie viele Versicherungsprodukte beziehungsweise die dahinter stehenden Versicherungen/Versicherer sind an der Risikodeckungen über die verschiedenen Objekte beteiligt?
+Aus Sicht einer Versicherung: wo konzentrieren sich meine Risiken, zum Beispiel regional, zum Beispiel nach Branche, zum Beispiel nach maximaler Schadenshöhe?
+Welcher Makler bringt mir am meisten Geschäft? Wo sind Deckungslücke beim versicherten Unternehmen? Wo sind über mehrere Versicherungsverträge/Produkte Mehrfachdeckungen an einem Objekt vorhanden?
+
+
+Deine Aufgabe: Setze die vorhandene DB schrittweise in eine Ontologie und einen Graphen um, aber optimiere sie vor dem gegebenen fachlichen Hintegrund. namen von entitäten und feldern sollen so weit wie möglich übernommen werden - können aber korrigiert werden, wenn sie irreführend sind.
+
+Ich möchte die entwicklung der Ontologie und des Graphen so konkret und nachvollziehbar wie möglich für mich machen. Die abstrakte Beschreibung der Entitäten und Beziehungen reicht mir da nicht aus, ich verliere den Überblick.
+
+Mache die Migration schrittweise, in einer fachlich sinnvollen Reihenfolge und stelle Verständnisfragen / Rückfragen, damit die Struktur optimiert werden kann. befülle ggf. auch zwischendurch die db mit testdaten, um das verständnis zu erleichtern. ich kann mir dann die daten in der main app im Neo4j Explorer anschauen.
+
+Speichere Onotololgie und Graph nach jedem Zwischenschritt als Markdown-Dateien im Verzeichnis "Ontology_UWWB", erstelle bei Bedarf Cypher Scripts im Unterverziechnis "cypher", so dass diese vom Import-Mechanismus im der main app (Neo4j Explorer) importiert werden können. Ich möchte die Arbeit jederzeit unterbrechen können und dann mithilfe der bisher entsandenen Dokumentation bzw. dem Zwischenstand der Datenbank weiterarbeiten können.
+
+Zusammenfassend: Ich möchte gerne in einem interaktiven Prozess die vorhandene db nach Neo4J migrieren.
+
+
+- Partner: Tochterunternehmen fehlen
+- Deckung - keine Unterscheidung zwischen gewünscht / angeboten / vertraglich vereinbart
+- Co-Insurance - Beteiligung in % fehlt
+
+
+
+
+erstelle aus dem chat verlauf einen generischen skill "ontology-creator", der mir beim entwurf von ontologie / Graphen hilft: Nimmt bisherigen Input entgegen (z. B. vorhandene DB, fachliche Konzepte) und entwickelt dann - wie in diesem chat - schritt für schritt ontologie und graph in einem interaktiven prozess (mit nutzung der app /Neo4j Explorer)

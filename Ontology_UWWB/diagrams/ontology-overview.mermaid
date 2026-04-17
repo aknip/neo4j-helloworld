@@ -1,91 +1,60 @@
+%% UWWB Ontology - Overview
+%% Stand: 2026-04-17 | Version: 1.0
 graph LR
-    subgraph Partner["Partner & Struktur"]
-        Customer["Customer\n:Partner:Customer"]
-        Insurer["Insurer\n:Partner:Insurer"]
-        Broker["Broker\n:Partner:Broker"]
-        Contact["Contact\n:Partner:Contact"]
-    end
+  %% === Kern-Domäne ===
+  Company[Company]
+  Company -->|PARENT_OF| Company
+  Company -->|OWNS| Object[Object]
+  Object -->|OF_TYPE| ObjectType[ObjectType]
+  Object -->|HAS_RISK| Risk[Risk]
+  Risk -->|PERIL_TYPE| PerilType[PerilType]
+  Risk -->|COVERED_BY| Coverage[Coverage]
+  Coverage -->|BASED_ON| Product[Product]
+  Product -->|IN_LINE| Line[Line]
+  Line -->|GOVERNED_BY| UnderwritingGuideline[UnderwritingGuideline]
 
-    subgraph Objekte["Versicherbare Objekte"]
-        InsurableObject["InsurableObject\n:Building / :Machine /\n:Vehicle / :Person / :Project"]
-        Risk["Risk"]
-        CoverageRequest["CoverageRequest"]
-    end
+  %% === Coverage-Lifecycle ===
+  Coverage -->|REQUESTED_IN| Submission[Submission]
+  Coverage -->|OFFERED_IN| Quote[Quote]
+  Coverage -->|BOUND_IN| Policy[Policy]
+  Coverage -->|DERIVED_FROM| Coverage
 
-    subgraph Produkte["Versicherungsprodukte"]
-        InsuranceLine["InsuranceLine"]
-        InsuranceProduct["InsuranceProduct"]
-        CoverageDef["CoverageDefinition"]
-        Clause["Clause"]
-    end
+  %% === Workflow & Vertrieb ===
+  Tender[Tender] -->|ISSUED_BY| Broker[Broker]
+  Tender -->|FOR_COMPANY| Company
+  Submission -->|IN_TENDER| Tender
+  Submission -->|SUBMITTED_BY| Broker
+  Submission -->|COVERS_COMPANY| Company
+  Submission -->|ADDRESSED_TO| Insurer[Insurer]
+  Submission -->|HAS_OBJECT| Object
+  Submission -->|APPROVED_BY| User[User]
+  Submission -->|PRODUCED| Quote
+  Quote -->|FOR_PRODUCT| Product
+  Quote -->|UNDERWRITTEN_BY| Insurer
+  Quote -->|REALIZED_AS| Policy
+  Policy -->|ON_PRODUCT| Product
+  Policy -->|UNDERWRITTEN_BY| Insurer
+  Policy -->|AMENDED_BY| Endorsement[Endorsement]
+  Policy -->|HAS_CLAIM| Claim[Claim]
+  Claim -->|ON_OBJECT| Object
+  Claim -->|FOR_RISK| Risk
+  Claim -->|AFFECTS_COVERAGE| Coverage
 
-    subgraph Prozess["Ausschreibung & Angebot"]
-        Submission["Submission"]
-        Offer["Offer"]
-        CoverageOffer["CoverageOffer"]
-    end
+  %% === KI-Schicht ===
+  Submission -->|HAS_DOCUMENT| Document[Document]
+  Submission -->|PROCESSED_IN| ExtractionRun[ExtractionRun]
+  ExtractionRun -->|USED_DOCUMENT| Document
+  ExtractedField[ExtractedField] -->|EXTRACTED_IN| ExtractionRun
+  ExtractedField -->|FROM_DOCUMENT| Document
+  ExtractedField -->|POPULATES| Object
+  ExtractedField -->|POPULATES| Risk
+  ExtractedField -->|POPULATES| Coverage
 
-    subgraph Vertrag["Vertrag"]
-        Policy["Policy"]
-        PolicyCoverage["PolicyCoverage"]
-        Endorsement["Endorsement"]
-    end
-
-    subgraph Schaden["Schadenmanagement"]
-        Claim["Claim"]
-        ClaimSettlement["ClaimSettlement"]
-    end
-
-    subgraph Flex["Flexible Attribute"]
-        AttributeTemplate["AttributeTemplate"]
-        CustomAttribute["CustomAttribute"]
-    end
-
-    %% Partner & Struktur
-    Customer -->|HAS_SUBSIDIARY| Customer
-    Contact -->|WORKS_FOR| Customer
-    Contact -->|WORKS_FOR| Insurer
-    Contact -->|WORKS_FOR| Broker
-    Broker -->|MANAGES_ACCOUNT| Customer
-
-    %% Objekte & Risiken
-    Customer -->|OWNS| InsurableObject
-    InsurableObject -->|HAS_RISK| Risk
-    Risk -->|HAS_COVERAGE_REQUEST| CoverageRequest
-
-    %% Produkte
-    Insurer -->|OFFERS| InsuranceProduct
-    InsuranceProduct -->|BELONGS_TO_LINE| InsuranceLine
-    InsuranceLine -->|HAS_SUBLINE| InsuranceLine
-    InsuranceProduct -->|HAS_COVERAGE_DEF| CoverageDef
-    CoverageDef -->|HAS_CLAUSE| Clause
-
-    %% Ausschreibung & Angebot
-    Broker -->|SUBMITS| Submission
-    Submission -->|FOR_CUSTOMER| Customer
-    Submission -->|INCLUDES_REQUEST| CoverageRequest
-    Insurer -->|RESPONDS_WITH| Offer
-    Offer -->|FOR_SUBMISSION| Submission
-    Offer -->|CONTAINS| CoverageOffer
-    CoverageOffer -->|RESPONDS_TO| CoverageRequest
-    CoverageOffer -->|BASED_ON| CoverageDef
-
-    %% Vertrag
-    Policy -->|BOUND_FROM| Offer
-    Policy -->|INSURES| Customer
-    Policy -->|BROKERED_BY| Broker
-    Policy -->|UNDERWRITTEN_BY| Insurer
-    Policy -->|HAS_COVERAGE| PolicyCoverage
-    PolicyCoverage -->|COVERS_RISK| Risk
-    PolicyCoverage -->|BASED_ON_DEF| CoverageDef
-    Policy -->|HAS_ENDORSEMENT| Endorsement
-
-    %% Schaden
-    Claim -->|AGAINST_POLICY| Policy
-    Claim -->|AFFECTS_OBJECT| InsurableObject
-    Claim -->|AFFECTS_COVERAGE| PolicyCoverage
-    Claim -->|HAS_SETTLEMENT| ClaimSettlement
-
-    %% Flexible Attribute
-    InsurableObject -->|HAS_ATTRIBUTE| CustomAttribute
-    CustomAttribute -->|DEFINED_BY| AttributeTemplate
+  %% === Assessment & Audit ===
+  Assessment[Assessment] -->|ASSESSES| Submission
+  Assessment -->|APPLIES_GUIDELINE| UnderwritingGuideline
+  User -->|AUTHORED| UnderwritingGuideline
+  User -->|MEMBER_OF| Line
+  AuditEvent[AuditEvent] -->|ON_SUBMISSION| Submission
+  AuditEvent -->|BY_USER| User
+  AuditEvent -->|AFFECTS_FIELD| ExtractedField

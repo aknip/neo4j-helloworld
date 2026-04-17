@@ -1,101 +1,54 @@
 // =============================================================================
-// 01-constraints-indexes.cypher
-// Ontologie: UWWB (Underwriting Workbench)
-// Generiert: 2026-04-09
-// Version: 1.0
+// UWWB Ontology - Constraints & Indexes
+// Stand: 2026-04-17 | Version: 1.0
+// =============================================================================
+// Alle Nodes mit eindeutiger id erhalten einen Unique-Constraint.
+// Zusätzliche Range-/Text-Indexes auf häufig abgefragten Properties.
 // =============================================================================
 
-// === Unique Constraints ======================================================
+// === Kern-Domäne ===========================================================
+CREATE CONSTRAINT line_id_unique IF NOT EXISTS FOR (n:Line) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT company_id_unique IF NOT EXISTS FOR (n:Company) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT broker_id_unique IF NOT EXISTS FOR (n:Broker) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT insurer_id_unique IF NOT EXISTS FOR (n:Insurer) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT product_id_unique IF NOT EXISTS FOR (n:Product) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT object_id_unique IF NOT EXISTS FOR (n:Object) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT risk_id_unique IF NOT EXISTS FOR (n:Risk) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT coverage_id_unique IF NOT EXISTS FOR (n:Coverage) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT policy_id_unique IF NOT EXISTS FOR (n:Policy) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT endorsement_id_unique IF NOT EXISTS FOR (n:Endorsement) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT claim_id_unique IF NOT EXISTS FOR (n:Claim) REQUIRE n.id IS UNIQUE;
 
-// Partner & Rollen
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:Partner) REQUIRE n.id IS UNIQUE;
+// === Workflow ==============================================================
+CREATE CONSTRAINT tender_id_unique IF NOT EXISTS FOR (n:Tender) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT submission_id_unique IF NOT EXISTS FOR (n:Submission) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT quote_id_unique IF NOT EXISTS FOR (n:Quote) REQUIRE n.id IS UNIQUE;
 
-// Versicherbare Objekte
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:InsurableObject) REQUIRE n.id IS UNIQUE;
+// === KI-Schicht ============================================================
+CREATE CONSTRAINT document_id_unique IF NOT EXISTS FOR (n:Document) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT extractionrun_id_unique IF NOT EXISTS FOR (n:ExtractionRun) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT extractedfield_id_unique IF NOT EXISTS FOR (n:ExtractedField) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT assessment_id_unique IF NOT EXISTS FOR (n:Assessment) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT uwguideline_id_unique IF NOT EXISTS FOR (n:UnderwritingGuideline) REQUIRE n.id IS UNIQUE;
 
-// Risiko & Deckungswunsch
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:Risk) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:CoverageRequest) REQUIRE n.id IS UNIQUE;
+// === Nutzer & Audit ========================================================
+CREATE CONSTRAINT user_id_unique IF NOT EXISTS FOR (n:User) REQUIRE n.id IS UNIQUE;
+CREATE CONSTRAINT auditevent_id_unique IF NOT EXISTS FOR (n:AuditEvent) REQUIRE n.id IS UNIQUE;
 
-// Versicherungsprodukte
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:InsuranceProduct) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:InsuranceLine) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:CoverageDefinition) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:Clause) REQUIRE n.id IS UNIQUE;
+// === Template-Nodes ========================================================
+CREATE CONSTRAINT objecttype_code_unique IF NOT EXISTS FOR (n:ObjectType) REQUIRE n.code IS UNIQUE;
+CREATE CONSTRAINT periltype_code_unique IF NOT EXISTS FOR (n:PerilType) REQUIRE n.code IS UNIQUE;
 
-// Geschaeftsprozesse
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:Submission) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:Offer) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:CoverageOffer) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:Policy) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:Policy) REQUIRE n.policyNumber IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:PolicyCoverage) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:Endorsement) REQUIRE n.id IS UNIQUE;
+// === Zusätzliche Business-Keys =============================================
+CREATE CONSTRAINT policy_policynumber_unique IF NOT EXISTS FOR (n:Policy) REQUIRE n.policyNumber IS UNIQUE;
+CREATE CONSTRAINT claim_claimnumber_unique IF NOT EXISTS FOR (n:Claim) REQUIRE n.claimNumber IS UNIQUE;
 
-// Schadenmanagement
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:Claim) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:Claim) REQUIRE n.claimNumber IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:ClaimSettlement) REQUIRE n.id IS UNIQUE;
-
-// Flexible Attribute
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:AttributeTemplate) REQUIRE n.id IS UNIQUE;
-CREATE CONSTRAINT IF NOT EXISTS FOR (n:CustomAttribute) REQUIRE n.id IS UNIQUE;
-
-// === Range Indexes ===========================================================
-
-// Partner & Rollen
-CREATE INDEX IF NOT EXISTS FOR (n:Partner) ON (n.legalName);
-CREATE INDEX IF NOT EXISTS FOR (n:Partner) ON (n.partnerType);
-CREATE INDEX IF NOT EXISTS FOR (n:Partner) ON (n.country);
-CREATE INDEX IF NOT EXISTS FOR (n:Partner) ON (n.status);
-CREATE INDEX IF NOT EXISTS FOR (n:Customer) ON (n.industry);
-CREATE INDEX IF NOT EXISTS FOR (n:Insurer) ON (n.rating);
-CREATE INDEX IF NOT EXISTS FOR (n:Broker) ON (n.licenseNumber);
-CREATE INDEX IF NOT EXISTS FOR (n:Contact) ON (n.lastName);
-CREATE INDEX IF NOT EXISTS FOR (n:Contact) ON (n.email);
-
-// Versicherbare Objekte
-CREATE INDEX IF NOT EXISTS FOR (n:InsurableObject) ON (n.objectName);
-CREATE INDEX IF NOT EXISTS FOR (n:InsurableObject) ON (n.location);
-CREATE INDEX IF NOT EXISTS FOR (n:InsurableObject) ON (n.status);
-CREATE INDEX IF NOT EXISTS FOR (n:Building) ON (n.fireProtectionClass);
-CREATE INDEX IF NOT EXISTS FOR (n:Machine) ON (n.manufacturer);
-CREATE INDEX IF NOT EXISTS FOR (n:Machine) ON (n.machineType);
-CREATE INDEX IF NOT EXISTS FOR (n:Vehicle) ON (n.licensePlate);
-CREATE INDEX IF NOT EXISTS FOR (n:Vehicle) ON (n.vehicleType);
-CREATE INDEX IF NOT EXISTS FOR (n:Person) ON (n.lastName);
-CREATE INDEX IF NOT EXISTS FOR (n:Person) ON (n.role);
-CREATE INDEX IF NOT EXISTS FOR (n:Project) ON (n.projectName);
-
-// Risiko & Deckungswunsch
-CREATE INDEX IF NOT EXISTS FOR (n:Risk) ON (n.riskType);
-CREATE INDEX IF NOT EXISTS FOR (n:CoverageRequest) ON (n.status);
-
-// Versicherungsprodukte
-CREATE INDEX IF NOT EXISTS FOR (n:InsuranceProduct) ON (n.productName);
-CREATE INDEX IF NOT EXISTS FOR (n:InsuranceProduct) ON (n.status);
-CREATE INDEX IF NOT EXISTS FOR (n:InsuranceLine) ON (n.lineName);
-CREATE INDEX IF NOT EXISTS FOR (n:InsuranceLine) ON (n.lineCode);
-CREATE INDEX IF NOT EXISTS FOR (n:CoverageDefinition) ON (n.name);
-CREATE INDEX IF NOT EXISTS FOR (n:Clause) ON (n.clauseCode);
-CREATE INDEX IF NOT EXISTS FOR (n:Clause) ON (n.title);
-
-// Geschaeftsprozesse
-CREATE INDEX IF NOT EXISTS FOR (n:Submission) ON (n.submissionDate);
-CREATE INDEX IF NOT EXISTS FOR (n:Submission) ON (n.deadline);
-CREATE INDEX IF NOT EXISTS FOR (n:Submission) ON (n.status);
-CREATE INDEX IF NOT EXISTS FOR (n:Offer) ON (n.status);
-CREATE INDEX IF NOT EXISTS FOR (n:Policy) ON (n.effectiveDate);
-CREATE INDEX IF NOT EXISTS FOR (n:Policy) ON (n.expirationDate);
-CREATE INDEX IF NOT EXISTS FOR (n:Policy) ON (n.status);
-CREATE INDEX IF NOT EXISTS FOR (n:Endorsement) ON (n.endorsementNumber);
-CREATE INDEX IF NOT EXISTS FOR (n:Endorsement) ON (n.effectiveDate);
-
-// Schadenmanagement
-CREATE INDEX IF NOT EXISTS FOR (n:Claim) ON (n.claimDate);
-CREATE INDEX IF NOT EXISTS FOR (n:Claim) ON (n.status);
-CREATE INDEX IF NOT EXISTS FOR (n:ClaimSettlement) ON (n.settlementDate);
-CREATE INDEX IF NOT EXISTS FOR (n:ClaimSettlement) ON (n.settlementType);
-
-// Flexible Attribute
-CREATE INDEX IF NOT EXISTS FOR (n:AttributeTemplate) ON (n.templateName);
+// === Range-Indexes für häufige Filter ======================================
+CREATE INDEX coverage_status IF NOT EXISTS FOR (n:Coverage) ON (n.lifecycleStatus);
+CREATE INDEX submission_status IF NOT EXISTS FOR (n:Submission) ON (n.status);
+CREATE INDEX policy_status IF NOT EXISTS FOR (n:Policy) ON (n.status);
+CREATE INDEX object_type IF NOT EXISTS FOR (n:Object) ON (n.objectType);
+CREATE INDEX risk_peril IF NOT EXISTS FOR (n:Risk) ON (n.peril);
+CREATE INDEX company_city IF NOT EXISTS FOR (n:Company) ON (n.city);
+CREATE INDEX company_industry IF NOT EXISTS FOR (n:Company) ON (n.industry);
+CREATE INDEX claim_incidentdate IF NOT EXISTS FOR (n:Claim) ON (n.incidentDate);
